@@ -20,10 +20,10 @@ class GapBuffer {
 		{};
 
 		void insert(char data);
-		void moveleft();
-		void moveright();
+		void move_left();
+		void move_right();
 		void grow();
-		std::string gettext();
+		std::string get_text();
 		void backspace();
 };
 
