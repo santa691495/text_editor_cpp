@@ -40,6 +40,22 @@ void GapBuffer::move_right(){
 	gap_end += 1;
 }
 
+void GapBuffer::move_cursor(size_t index){
+	char* target {&buffer[0]+index};	
+	
+	if(gap_start == target){
+		return;
+	}
+
+	while(gap_start < target){
+		move_right();
+	}
+
+	while(gap_start > target){
+		move_left();
+	}
+}
+
 void GapBuffer::grow(){
 	size_t new_gap_size {buffer.size()};
 	
