@@ -17,8 +17,8 @@ class GapBuffer {
 		gap_start{&buffer[0]},
 		gap_end{buffer.data() + buffer.size()}
 
-		{};
-
+		{}
+	
 		void insert(char data);
 		void move_left();
 		void move_right();
@@ -26,6 +26,7 @@ class GapBuffer {
 		void grow();
 		std::string get_text();
 		void backspace();
+
 };
 
 #endif //GAP_BUFFER

@@ -1,12 +1,12 @@
 #include <string> 
 #include <vector>
 #include "gapbuffer.h"
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 
 TEST(GapBuffer, ConsecutiveInsertion){
-	char x = 'a';
-	char y = 'b';
-	char z = 'c';
+	char x  {'a'};
+	char y  {'b'};
+	char z  {'c'};
 	
 	GapBuffer test_buffer;
 	
@@ -16,21 +16,33 @@ TEST(GapBuffer, ConsecutiveInsertion){
 	
 	EXPECT_EQ(test_buffer.get_text(), x+y+z);
 }
-//movement correctly moves the chars to left and right
-TEST(GapBuffer, ConsecutiveMovementLeft){
 
+TEST(GapBuffer, MovementLeft){
+	GapBuffer test_buffer;
+
+	test_buffer.insert('a');
+	test_buffer.insert('b');
+	
+	test_buffer.move_left();
+	
+	test_buffer.insert('c');
+		
+	EXPECT_EQ(test_buffer.get_text(), "acb");
 }
 
-TEST(GapBuffer, ConsecutiveMovementRight){
+TEST(GapBuffer, MovementRight){
+	GapBuffer test_buffer;
 
-}
-
-TEST(GapBuffer, ConsecutiveMoveCursor){
-
-}
-
-TEST(GapBuffer, RandomMoveCursor){
-
+	test_buffer.insert('a');
+	test_buffer.insert('b');
+	
+	test_buffer.move_left();
+	test_buffer.move_left();
+	test_buffer.move_right();
+	
+	test_buffer.insert('c');
+		
+	EXPECT_EQ(test_buffer.get_text(), "acb");
 }
 
 
