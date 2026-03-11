@@ -7,7 +7,7 @@
 class GapBuffer {
 	private:
 		std::vector<char> buffer;
-		constexpr int init_buffer_size = 4000;
+		static constexpr int init_buffer_size = 4000;
 		char* gap_start = nullptr;
 		char* gap_end = nullptr;
 
