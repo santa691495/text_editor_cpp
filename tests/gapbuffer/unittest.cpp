@@ -2,7 +2,7 @@
 #include <vector>
 #include "gapbuffer.h"
 #include "gtest/gtest.h"
-
+//passed
 TEST(GapBuffer, ConsecutiveInsertion){
 	char x  ='a';
 	char y  ='b';
@@ -21,7 +21,7 @@ TEST(GapBuffer, ConsecutiveInsertion){
 
 	EXPECT_EQ(test_buffer.get_text(), expected_text);
 }
-
+//passed
 TEST(GapBuffer, MovementLeft){
 	GapBuffer test_buffer;
 
@@ -43,7 +43,7 @@ TEST(GapBuffer, MovementLeft){
 
 	EXPECT_EQ(test_buffer.get_text(), expected_text);
 }
-
+//passed
 TEST(GapBuffer, MovementRight){
 	GapBuffer test_buffer;
 
@@ -67,5 +67,58 @@ TEST(GapBuffer, MovementRight){
 
 	EXPECT_EQ(test_buffer.get_text(), expected_text);
 }
+//passed
+//FIXME: make expected_text the sum of default and inserted to make it more dynamic
+TEST(GapBuffer, MoveCursorRight){
+	GapBuffer test_buffer;
+	std::string default_text = "qwertyuiop";
+	std::string inserted_text = "abc";
+	std::string expected_text = "qwertyabcuiop";
+
+	for(auto ch : default_text){
+		test_buffer.insert(ch);
+	}
+	
+	size_t insertion_index = 6;
+	test_buffer.move_cursor(insertion_index);
+
+	for(auto ch : inserted_text){
+		test_buffer.insert(ch);
+	}
+
+	EXPECT_EQ(test_buffer.get_text(), expected_text);
+}
+//passed
+TEST(GapBuffer, MoveCursorLeft){
+	GapBuffer test_buffer;
+	std::string default_text = "qwertyuiop";
+	std::string inserted_text = "abc";
+	std::string expected_text = "qabcwertyuiop";
+
+	for(auto ch : default_text){
+		test_buffer.insert(ch);
+	}
+	
+	size_t init_index = 6;
+	size_t insertion_index = 1;
+	test_buffer.move_cursor(init_index);
+	test_buffer.move_cursor(insertion_index);
+	
+	for(auto ch : inserted_text){
+		test_buffer.insert(ch);
+	}
+
+	EXPECT_EQ(test_buffer.get_text(), expected_text);
+}
+
+TEST(GapBuffer, Grow){
+	GapBuffer test_buffer;
+	
+	//needto fill with 4k lines of text
+	//need to change this to something smaller for this test only!
+	//or just actually fill it with 4k lines 
+}
+
+
 
 
