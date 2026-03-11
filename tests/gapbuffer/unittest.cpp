@@ -114,11 +114,35 @@ TEST(GapBuffer, MoveCursorLeft){
 TEST(GapBuffer, Grow){
 	GapBuffer test_buffer;
 	
-	//needto fill with 4k lines of text
-	//need to change this to something smaller for this test only!
-	//or just actually fill it with 4k lines 
+	//growth happens when the buffer is filled 
+	//must check if the previous text is still preserved by adding
+	//more text after the growth then checking
+	
+	for(size_t i = 0; i < 4000; ++i){
+		test_buffer.insert('A');
+	}
+
+	test_buffer.grow();
+	test_buffer.insert('B');
+	
+	size_t target_index = 4000;
+	std::string buffer_text = test_buffer.get_text();
+	
+	EXPECT_EQ(buffer_text[target_index], 'B');
 }
 
-
+TEST(GapBuffer, Backspace){
+	GapBuffer test_buffer;
+	
+	std::string default_text = "abc";
+	std::string expected_text = "ab";
+	for(auto ch : default_text){
+		test_buffer.insert(ch);
+	}
+	
+	test_buffer.backspace();
+	
+	EXPECT_EQ(test_buffer.get_text(), expected_text);
+}
 
 
