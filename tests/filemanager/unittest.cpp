@@ -1,0 +1,86 @@
+#include "gtest/gtest.h"
+#include "gapbuffer.h"
+#include "filemanager.h"
+#include <string>
+#include <filesystem>
+
+TEST(FileManager, ResolvePathLower){
+	std::filesystem::path current_file = "/home/chris/software_projects/text_editor/tests/filemanager/dummy_root.txt";
+	std::filesystem::path target_path = "./test_path/dummy_target.txt";
+	std::filesystem::path expected_path = "/home/chris/software_projects/text_editor/tests/filemanager/test_path/dummy_target.txt";
+
+	GapBuffer test_buffer;
+	FileManager test_fm(current_file);
+
+	ASSERT_EQ(test_fm.resolve_target_path(target_path), expected_path);
+}
+
+TEST(FileManager, ResolvePathHigher){
+	std::filesystem::path current_file = "/home/chris/software_projects/text_editor/tests/filemanager/test_path/dummy_target.txt";
+	std::filesystem::path target_path = "../dummy_root.txt";
+	std::filesystem::path expected_path = "/home/chris/software_projects/text_editor/tests/filemanager/dummy_root.txt";
+	
+	GapBuffer test_buffer;
+	FileManager test_fm(current_file);
+	
+	ASSERT_EQ(test_fm.resolve_target_path(target_path), expected_path);
+}
+
+TEST(FileManager, FileExists){
+	std::filesystem::path current_file = "/home/chris/software_projects/text_editor/tests/filemanager/dummy_root.txt";
+	std::filesystem::path target_path = "./test_path/dummy_target.txt";
+	
+	GapBuffer test_buffer;
+	FileManager test_fm(current_file);
+	
+	ASSERT_EQ(test_fm.file_exists(target_path), true);
+}
+	
+//text in target file must equal to text in gapbuffer
+TEST(FileManager, WriteFile){
+	std::filesystem::path target_path = "./test_path/dummy_target.txt";
+	std::filesystem::path current_file = "/home/chris/software_projects/text_editor/tests/filemanager/dummy_root.txt";
+	
+	std::string expected_text = "TestSuccess";
+		
+	GapBuffer test_buffer;
+	for(auto ch : expected_text){
+		test_buffer.insert(ch);
+	}	
+	
+	ASSERT_EQ(expected_text, test_buffer.get_text());	
+
+	FileManager test_fm(current_file);
+	test_fm.write_file(target_path, test_buffer);
+
+	target_path = test_fm.resolve_target_path(target_path);
+
+	std::ifstream target_file(target_path);
+	
+	ASSERT_TRUE(target_file.is_open());
+
+	std::string file_text; 
+	std::getline(target_file, file_text, '\0');
+
+	ASSERT_EQ(file_text, expected_text);
+}
+
+TEST(FileManager, ReadFile){
+	std::filesystem::path target_path = "./test_path/dummy_target.txt";
+	std::filesystem::path current_file = "/home/chris/software_projects/text_editor/tests/filemanager/dummy_root.txt";
+	std::string file_text = "TestSuccess";
+	
+	//prep the file
+	std::ofstream target_file(target_path);
+	target_file << file_text;
+
+	FileManager test_fm(current_file);
+	GapBuffer test_buffer {test_fm.read_file(target_path)};
+
+	ASSERT_EQ(file_text, test_buffer.get_text());
+}
+
+
+
+
+

@@ -7,7 +7,7 @@ target_sources(filemanager
 	PUBLIC
 	FILE_SET HEADERS
 	BASE_DIRS
-		${CMAKE_CURRENT_SOURCCE_DIR}
+		${CMAKE_CURRENT_SOURCE_DIR}
 	FILES
 		filemanager.h
 )

@@ -2,23 +2,34 @@
 #include <string>
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 #include "gapbuffer.h"
-
-FileManager::FileManager(GapBuffer& current_buffer){
-	this->current_buffer = current_buffer;
+#include "filemanager.h"
+FileManager::FileManager(std::filesystem::path current_file){
+	if(current_file.is_absolute()){
+		this->current_file = current_file;
+		return;
+	}
+	//file path must be relative to the current working dir
+	std::filesystem::path combined = std::filesystem::current_path() / current_file;
+	this->current_file = std::filesystem::weakly_canonical(combined);
 }
 
-std::filesystem::path FileManager::resolve_path(std::filesystem::path filepath){
-	if(filepath.is_absolute()){
-		return filepath;
-	}
+std::filesystem::path FileManager::resolve_target_path(std::filesystem::path filepath){
+	
+	std::filesystem::path base = 
+	current_file.empty() ? 
+	std::filesystem::current_path() 
+	: current_file.parent_path();
 
-	std::filesystem::path resolved = filepath.parent_path() / filepath;
-	return resolved;
+	std::filesystem::path combined = 
+	filepath.is_absolute() ? filepath : base / filepath;
+	
+	return std::filesystem::weakly_canonical(combined);
 }
 
 bool FileManager::file_exists(std::filesystem::path filepath){
-	filepath = resolve_path(filepath);
+	filepath = resolve_target_path(filepath);
 		
 	if(std::filesystem::exists(filepath)){
 		return true;
@@ -27,8 +38,8 @@ bool FileManager::file_exists(std::filesystem::path filepath){
 	return false;
 }
 
-void FileManager::write_file(std::filesystem::path filepath){
-	filepath = resolve_path(filepath);
+void FileManager::write_file(std::filesystem::path filepath, GapBuffer& gapbuffer){
+	filepath = resolve_target_path(filepath);
 	
 	std::ofstream outfile(filepath);
 	
@@ -36,13 +47,13 @@ void FileManager::write_file(std::filesystem::path filepath){
 		std::cerr << "Could not open file\n";
 		return;
 	}
+	std::string buffer_text = gapbuffer.get_text();
 	outfile << buffer_text;
-	outfile.close();
 }	
 
 
 GapBuffer FileManager::read_file(std::filesystem::path filepath){
-	filepath = resolve_path(filepath);
+	filepath = resolve_target_path(filepath);
 	
 	std::ifstream infile(filepath);
 	
@@ -53,7 +64,7 @@ GapBuffer FileManager::read_file(std::filesystem::path filepath){
 	std::string input_line;
 	GapBuffer temp_buffer;
 
-	while(std::getline(infile, input_line)){
+	while(std::getline(infile, input_line, '\0')){
 		for(auto ch : input_line){
 			temp_buffer.insert(ch);
 		}
