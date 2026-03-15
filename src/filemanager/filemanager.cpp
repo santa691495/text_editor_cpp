@@ -5,12 +5,12 @@
 #include <iostream>
 #include "gapbuffer.h"
 #include "filemanager.h"
+
 FileManager::FileManager(std::filesystem::path current_file){
 	if(current_file.is_absolute()){
 		this->current_file = current_file;
 		return;
 	}
-	//file path must be relative to the current working dir
 	std::filesystem::path combined = std::filesystem::current_path() / current_file;
 	this->current_file = std::filesystem::weakly_canonical(combined);
 }
@@ -41,7 +41,7 @@ std::filesystem::path FileManager::resolve_target_path(std::filesystem::path fil
 	
 	return std::filesystem::weakly_canonical(combined);
 }
-
+//resolves AND checks if file exists
 bool FileManager::file_exists(std::filesystem::path filepath){
 	filepath = resolve_target_path(filepath);
 		

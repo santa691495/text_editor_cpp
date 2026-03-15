@@ -13,8 +13,10 @@ class FileManager {
 
 	public:
 		FileManager(std::filesystem::path current_file);
+
 		void set_current_file(std::filesystem::path filepath);
 		std::filesystem::path get_current_file();
+
 		std::filesystem::path resolve_target_path(std::filesystem::path filepath); 
 		bool file_exists(std::filesystem::path filepath);
 		void write_file(std::filesystem::path filepath, GapBuffer& gapbuffer);
