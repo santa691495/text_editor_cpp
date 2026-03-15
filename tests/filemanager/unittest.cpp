@@ -79,7 +79,27 @@ TEST(FileManager, ReadFile){
 
 	ASSERT_EQ(file_text, test_buffer.get_text());
 }
+//target path must be the same as get_current_file()
+TEST(FileManager, GetCurrentFile){
+	std::filesystem::path current_file = "/home/chris/software_projects/text_editor/tests/filemanager/dummy_root.txt";
+	
+	FileManager test_fm(current_file);
+	
+	ASSERT_EQ(test_fm.get_current_file(), current_file);
+}
 
+TEST(FileManager, SetCurrentFile){
+	std::filesystem::path new_path = "./test_path/dummy_target.txt";
+	std::filesystem::path current_file = "/home/chris/software_projects/text_editor/tests/filemanager/dummy_root.txt";
+	
+	FileManager test_fm(current_file);
+	
+	test_fm.set_current_file(new_path);
+		
+	std::filesystem::path expected_path = "/home/chris/software_projects/text_editor/tests/filemanager/test_path/dummy_target.txt";
+
+	ASSERT_EQ(test_fm.get_current_file(), expected_path);
+}
 
 
 

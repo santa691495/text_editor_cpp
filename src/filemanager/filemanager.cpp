@@ -15,6 +15,20 @@ FileManager::FileManager(std::filesystem::path current_file){
 	this->current_file = std::filesystem::weakly_canonical(combined);
 }
 
+void FileManager::set_current_file(std::filesystem::path filepath){
+	filepath = resolve_target_path(filepath);
+	
+	if(!file_exists(filepath)){
+		return;
+	}
+
+	this->current_file = filepath;
+}
+
+std::filesystem::path FileManager::get_current_file(){
+	return current_file;
+}
+
 std::filesystem::path FileManager::resolve_target_path(std::filesystem::path filepath){
 	
 	std::filesystem::path base = 
