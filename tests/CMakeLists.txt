@@ -1,2 +1,3 @@
 add_subdirectory(gapbuffer)
 add_subdirectory(filemanager)
+add_subdirectory(commandparser)
