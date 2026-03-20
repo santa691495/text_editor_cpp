@@ -9,24 +9,25 @@
 
 //TODO: add to handler functions
 //the other operations needed to complete 
-//the action (like UI class methods that switch the ui 
+//the action (like UI class methods that switch the ui
+const std::vector<std::string> CommandRunner::cmd_list = {"w", "o", "q"};
+
 CommandRunner::CommandRunner(FileManager& fm, GapBuffer& gb, bool& run):
 	filemanager(fm),
 	gapbuffer(gb),
-	running(run),
+	running(run)
 {
-
 	handlers["w"] = [this](CommandObject& cmd){
 		filemanager.write_file(cmd.args[0], gapbuffer);
-	}
+	};
 
 	handlers["o"] = [this](CommandObject& cmd){
 		gapbuffer = filemanager.read_file(cmd.args[0]);
-	}		
+	};		
 
 	handlers["q"] = [this](CommandObject& cmd){
 		running = false;
-	}
+	};
 
 }
 

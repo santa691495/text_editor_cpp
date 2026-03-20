@@ -21,11 +21,10 @@ class CommandRunner {
 		GapBuffer& gapbuffer;
 		bool& running;
 
-		static const std::vector<std::string> cmd_list = {"w", "o", "q"};
+		static const std::vector<std::string> cmd_list;
 
 		//to relate command type to lambda function wrapping the class method
-		using cmd_handler = std::function<void(CommandObject& cmd)>
-		std::unordered_map<std::string, cmd_handler> handlers;
+		std::unordered_map<std::string, std::function<void(CommandObject& cmd)> > handlers;
 	
 	public:
 	
