@@ -27,10 +27,12 @@ class CommandRunner {
 		std::unordered_map<std::string, std::function<void(CommandObject& cmd)> > handlers;
 	
 	public:
+		FileManager get_fm();
+		GapBuffer get_gb();
+		std::vector<std::string> get_cmd_list();
 	
 		CommandRunner(FileManager& fm, GapBuffer& gb, bool& run);	
-		bool is_cmd_valid(CommandObject& cmd);
-		bool register_cmd(CommandObject& cmd);
+		void run(CommandObject& cmd);
 };
 
 #endif //COMMAND_RUNNER

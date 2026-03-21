@@ -2,6 +2,8 @@
 #include <vector>
 #include <functional>
 #include <unordered_map>
+#include <iterator>
+#include <algorithm>
 #include "cmd_obj.h"
 #include "gapbuffer.h"
 #include "filemanager.h"
@@ -12,6 +14,20 @@
 //the action (like UI class methods that switch the ui
 const std::vector<std::string> CommandRunner::cmd_list = {"w", "o", "q"};
 
+FileManager CommandRunner::get_fm(){
+	FileManager fm = filemanager;
+	return fm;
+}
+
+GapBuffer CommandRunner::get_gb(){
+	GapBuffer gb = gapbuffer;
+	return gb;
+}
+
+std::vector<std::string> CommandRunner::get_cmd_list(){
+	return cmd_list;
+}
+//FIXME: add error handling for writing and others
 CommandRunner::CommandRunner(FileManager& fm, GapBuffer& gb, bool& run):
 	filemanager(fm),
 	gapbuffer(gb),
@@ -31,22 +47,15 @@ CommandRunner::CommandRunner(FileManager& fm, GapBuffer& gb, bool& run):
 
 }
 
-bool CommandRunner::is_cmd_valid(CommandObject& cmd){
-	for(size_t i = 0; i < cmd_list.size(); ++i){
-		if(cmd.type == cmd_list[i]) return true;
+//iterates through the handlers
+void CommandRunner::run(CommandObject& cmd){
+	auto it = handlers.find(cmd.type);
+
+	if(it != handlers.end()){
+		it->second(cmd);
 	}
 
-	return false;
-}
-
-bool CommandRunner::register_cmd(CommandObject& cmd){
-	
-	if(!is_cmd_valid(cmd)){
-		return false;
-	}
-
-	handlers[cmd.type];
-	return true;
-}
+	return;
+}	
 
 

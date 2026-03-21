@@ -1,3 +1,4 @@
 add_subdirectory(gapbuffer)
 add_subdirectory(filemanager)
 add_subdirectory(commandparser)
+add_subdirectory(commandrunner)
