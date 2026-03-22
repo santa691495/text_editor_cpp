@@ -5,14 +5,18 @@
 #include <iostream>
 #include "gapbuffer.h"
 #include "filemanager.h"
-
 FileManager::FileManager(std::filesystem::path current_file){
-	if(current_file.is_absolute()){
-		this->current_file = current_file;
+ 	auto target_file = resolve_target_path(current_file);
+	
+	if(!std::filesystem::exists(current_file)){
+		return;
+	}	
+
+	if(!std::filesystem::is_regular_file(current_file)){
 		return;
 	}
-	std::filesystem::path combined = std::filesystem::current_path() / current_file;
-	this->current_file = std::filesystem::weakly_canonical(combined);
+
+	this->current_file = target_file;
 }
 
 void FileManager::set_current_file(std::filesystem::path filepath){
@@ -43,28 +47,24 @@ std::filesystem::path FileManager::resolve_target_path(std::filesystem::path fil
 }
 //resolves AND checks if file exists
 bool FileManager::file_exists(std::filesystem::path filepath){
-	filepath = resolve_target_path(filepath);
-		
-	if(std::filesystem::exists(filepath)){
-		return true;
-	}
+	auto resolved_path = resolve_target_path(filepath);
 
-	return false;
+	return std::filesystem::exists(resolved_path);
 }
 
-void FileManager::write_file(std::filesystem::path filepath, GapBuffer& gapbuffer){
+bool FileManager::write_file(std::filesystem::path filepath, GapBuffer& gapbuffer){
 	filepath = resolve_target_path(filepath);
 	
 	std::ofstream outfile(filepath);
 	
 	if(!outfile){
 		std::cerr << "Could not open file\n";
-		return;
+		return false;
 	}
 	std::string buffer_text = gapbuffer.get_text();
 	outfile << buffer_text;
+	return true;
 }	
-
 
 GapBuffer FileManager::read_file(std::filesystem::path filepath){
 	filepath = resolve_target_path(filepath);

@@ -5,9 +5,9 @@
 #include <filesystem>
 
 TEST(FileManager, ResolvePathLower){
-	std::filesystem::path current_file = "/home/chris/software_projects/text_editor/tests/filemanager/dummy_root.txt";
+	std::filesystem::path current_file = "/home/dingdong/softwareprojects/text_editor_practice/tests/filemanager/dummy_root.txt";
 	std::filesystem::path target_path = "./test_path/dummy_target.txt";
-	std::filesystem::path expected_path = "/home/chris/software_projects/text_editor/tests/filemanager/test_path/dummy_target.txt";
+	std::filesystem::path expected_path = "/home/dingdong/softwareprojects/text_editor_practice/tests/filemanager/test_path/dummy_target.txt";
 
 	GapBuffer test_buffer;
 	FileManager test_fm(current_file);
@@ -16,9 +16,9 @@ TEST(FileManager, ResolvePathLower){
 }
 
 TEST(FileManager, ResolvePathHigher){
-	std::filesystem::path current_file = "/home/chris/software_projects/text_editor/tests/filemanager/test_path/dummy_target.txt";
+	std::filesystem::path current_file = "/home/dingdong/softwareprojects/text_editor_practice/tests/filemanager/test_path/dummy_target.txt";
 	std::filesystem::path target_path = "../dummy_root.txt";
-	std::filesystem::path expected_path = "/home/chris/software_projects/text_editor/tests/filemanager/dummy_root.txt";
+	std::filesystem::path expected_path = "/home/dingdong/softwareprojects/text_editor_practice/tests/filemanager/dummy_root.txt";
 	
 	GapBuffer test_buffer;
 	FileManager test_fm(current_file);
@@ -27,7 +27,7 @@ TEST(FileManager, ResolvePathHigher){
 }
 
 TEST(FileManager, FileExists){
-	std::filesystem::path current_file = "/home/chris/software_projects/text_editor/tests/filemanager/dummy_root.txt";
+	std::filesystem::path current_file = "/home/dingdong/softwareprojects/text_editor_practice/tests/filemanager/dummy_root.txt";
 	std::filesystem::path target_path = "./test_path/dummy_target.txt";
 	
 	GapBuffer test_buffer;
@@ -39,7 +39,7 @@ TEST(FileManager, FileExists){
 //text in target file must equal to text in gapbuffer
 TEST(FileManager, WriteFile){
 	std::filesystem::path target_path = "./test_path/dummy_target.txt";
-	std::filesystem::path current_file = "/home/chris/software_projects/text_editor/tests/filemanager/dummy_root.txt";
+	std::filesystem::path current_file = "/home/dingdong/softwareprojects/text_editor_practice/tests/filemanager/dummy_root.txt";
 	
 	std::string expected_text = "TestSuccess";
 		
@@ -67,7 +67,7 @@ TEST(FileManager, WriteFile){
 
 TEST(FileManager, ReadFile){
 	std::filesystem::path target_path = "./test_path/dummy_target.txt";
-	std::filesystem::path current_file = "/home/chris/software_projects/text_editor/tests/filemanager/dummy_root.txt";
+	std::filesystem::path current_file = "/home/dingdong/softwareprojects/text_editor_practice/tests/filemanager/dummy_root.txt";
 	std::string file_text = "TestSuccess";
 	
 	//prep the file
@@ -81,7 +81,7 @@ TEST(FileManager, ReadFile){
 }
 //target path must be the same as get_current_file()
 TEST(FileManager, GetCurrentFile){
-	std::filesystem::path current_file = "/home/chris/software_projects/text_editor/tests/filemanager/dummy_root.txt";
+	std::filesystem::path current_file = "/home/dingdong/softwareprojects/text_editor_practice/tests/filemanager/dummy_root.txt";
 	
 	FileManager test_fm(current_file);
 	
@@ -90,16 +90,21 @@ TEST(FileManager, GetCurrentFile){
 
 TEST(FileManager, SetCurrentFile){
 	std::filesystem::path new_path = "./test_path/dummy_target.txt";
-	std::filesystem::path current_file = "/home/chris/software_projects/text_editor/tests/filemanager/dummy_root.txt";
+	std::filesystem::path current_file = "/home/dingdong/softwareprojects/text_editor_practice/tests/filemanager/dummy_root.txt";
 	
 	FileManager test_fm(current_file);
 	
 	test_fm.set_current_file(new_path);
 		
-	std::filesystem::path expected_path = "/home/chris/software_projects/text_editor/tests/filemanager/test_path/dummy_target.txt";
+	std::filesystem::path expected_path = "/home/dingdong/softwareprojects/text_editor_practice/tests/filemanager/test_path/dummy_target.txt";
 
 	ASSERT_EQ(test_fm.get_current_file(), expected_path);
 }
+
+
+
+
+
 
 
 
