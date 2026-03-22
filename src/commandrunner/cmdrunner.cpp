@@ -38,7 +38,7 @@ CommandRunner::CommandRunner(FileManager& fm, GapBuffer& gb, bool& run):
 	};
 
 	handlers["o"] = [this](CommandObject& cmd){
-		gapbuffer = filemanager.read_file(cmd.args[0]);
+		filemanager.read_file(cmd.args[0], gapbuffer);
 	};		
 
 	handlers["q"] = [this](CommandObject& cmd){

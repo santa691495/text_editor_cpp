@@ -3,11 +3,9 @@
 #include "cmd_obj.h"
 #include "cmdrunner.h"
 #include "gtest/gtest.h"
-#include <vector>
 #include <string>
 #include <filesystem>
-#include <iostream>
-
+#include <fstream>
 //must write to file
 TEST(CommandRunner, RegisterCmdWrite){
 	
@@ -45,6 +43,39 @@ TEST(CommandRunner, RegisterCmdWrite){
 
 	ASSERT_EQ(gapbuffer.get_text(), expected_text);
 }
+
+TEST(CommandRunner, RegisterCmdRead){
+	std::filesystem::path current_file = "./dummy.txt";
+	std::filesystem::path target_file = "./test_path/target.txt";
+
+	FileManager filemanager(current_file);
+
+	bool running = true;
+	GapBuffer gapbuffer;
+	
+	//prep the file 
+	std::ofstream out_file(target_file);
+		
+	ASSERT_TRUE(out_file.is_open());
+
+	std::string expected_text = "qwerty";
+	
+	out_file << expected_text;
+	out_file.close();
+	
+	CommandObject cmd_obj;
+	cmd_obj.type = "o";
+	cmd_obj.args.push_back(target_file);	
+
+	CommandRunner cmdrunner(filemanager, gapbuffer, running);
+	
+	cmdrunner.run(cmd_obj);
+
+	ASSERT_EQ(gapbuffer.get_text(), expected_text);
+
+} 
+
+
 
 
 
