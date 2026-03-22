@@ -117,5 +117,8 @@ void GapBuffer::backspace(){
 	gap_start -= 1;
 }
 
-
+void GapBuffer::clear(){
+	gap_start = &buffer[0];
+	gap_end = buffer.data()+buffer.size();
+}
 
