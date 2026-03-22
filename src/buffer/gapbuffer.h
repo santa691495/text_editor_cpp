@@ -26,7 +26,7 @@ class GapBuffer {
 		void grow();
 		std::string get_text();
 		void backspace();
-
+		void clear();
 };
 
 #endif //GAP_BUFFER
