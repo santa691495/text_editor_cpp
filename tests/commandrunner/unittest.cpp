@@ -10,35 +10,39 @@
 
 //must write to file
 TEST(CommandRunner, RegisterCmdWrite){
+	
+	//prep deps
+	std::filesystem::path current_file = "./dummy.txt";
+	std::filesystem::path target_file = "./test_path/target.txt";
 
-	std::filesystem::path target_file = "testpath/testfile.txt";
-	std::filesystem::path current_path = "unittest.cpp";
-	FileManager filemanager(current_path);
+	FileManager filemanager(current_file);
 
+	bool running = true;
 	GapBuffer gapbuffer;
 	
-	std::string expected_text = "qwerty";
+	std::string expected_text = "qwerty"; //target and gap must have this
 	for(char ch : expected_text){
 		gapbuffer.insert(ch);
 	}
 
-	EXPECT_EQ(gapbuffer.get_text(), expected_text);
-	EXPECT_EQ(filemanager.get_current_file(), "/home/dingdong/softwareprojects/text_editor_practice/build/tests/commandrunner/unittest.cpp" );
+	//prep command 
+	CommandObject cmd_obj;
+	cmd_obj.type = "w";
+	cmd_obj.args.push_back(target_file);
+	
+	ASSERT_TRUE(filemanager.file_exists(target_file));
+	ASSERT_TRUE(filemanager.file_exists(current_file));
 
-	bool running = true;
+	//prep runner
+	CommandRunner cmdrunner(filemanager, gapbuffer, running);
 	
-	CommandObject cmd;
-	cmd.type = "w";
-	cmd.args.push_back(target_file);
-	
-	CommandRunner test_cmdrunner(filemanager, gapbuffer, running);
-	
-	//WRITE TO THE FILE
-	test_cmdrunner.run(cmd);
-	
-	//verify if written
-	
-	
+	//le run command
+	cmdrunner.run(cmd_obj);
+		
+	//le verify
+	bool is_file_read = filemanager.read_file(target_file, gapbuffer);
+	ASSERT_TRUE(is_file_read);
+
 	ASSERT_EQ(gapbuffer.get_text(), expected_text);
 }
 
