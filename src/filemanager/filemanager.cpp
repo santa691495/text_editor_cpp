@@ -5,14 +5,15 @@
 #include <iostream>
 #include "gapbuffer.h"
 #include "filemanager.h"
+
 FileManager::FileManager(std::filesystem::path current_file){
  	auto target_file = resolve_target_path(current_file);
 	
-	if(!std::filesystem::exists(current_file)){
+	if(!std::filesystem::exists(target_file)){
 		return;
 	}	
 
-	if(!std::filesystem::is_regular_file(current_file)){
+	if(!std::filesystem::is_regular_file(target_file)){
 		return;
 	}
 
@@ -66,26 +67,27 @@ bool FileManager::write_file(std::filesystem::path filepath, GapBuffer& gapbuffe
 	return true;
 }	
 
-GapBuffer FileManager::read_file(std::filesystem::path filepath){
+bool FileManager::read_file(std::filesystem::path filepath, GapBuffer& gapbuffer){
 	filepath = resolve_target_path(filepath);
 	
 	std::ifstream infile(filepath);
 	
 	if(!infile){
 		std::cerr << "Could not open file\n";
+		return false;
 	}
-	
+		
+	gapbuffer.clear();
 	std::string input_line;
-	GapBuffer temp_buffer;
-
+	
 	while(std::getline(infile, input_line, '\0')){
-		for(auto ch : input_line){
-			temp_buffer.insert(ch);
+		for(auto& ch : input_line){
+			gapbuffer.insert(ch);
 		}
 	}
 
 	infile.close();
-	return temp_buffer;
+	return true;
 }
 
 
