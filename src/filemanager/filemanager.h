@@ -6,7 +6,7 @@
 
 #ifndef FILE_MANAGER
 #define FILE_MANAGER
-//TODO: set and get current file
+//TODO: Fix bugs, check cpp file
 class FileManager {
 	private:
 		std::filesystem::path current_file = "";
@@ -19,7 +19,7 @@ class FileManager {
 
 		std::filesystem::path resolve_target_path(std::filesystem::path filepath); 
 		bool file_exists(std::filesystem::path filepath);
-		void write_file(std::filesystem::path filepath, GapBuffer& gapbuffer);
+		bool write_file(std::filesystem::path filepath, GapBuffer& gapbuffer);
 		GapBuffer read_file(std::filesystem::path filepath);
 };
 
