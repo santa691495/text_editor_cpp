@@ -21,13 +21,17 @@ FileManager::FileManager(std::filesystem::path current_file){
 }
 
 void FileManager::set_current_file(std::filesystem::path filepath){
-	filepath = resolve_target_path(filepath);
+ 	auto target_file = resolve_target_path(current_file);
 	
-	if(!file_exists(filepath)){
+	if(!std::filesystem::exists(target_file)){
+		return;
+	}	
+
+	if(!std::filesystem::is_regular_file(target_file)){
 		return;
 	}
 
-	this->current_file = filepath;
+	this->current_file = target_file;
 }
 
 std::filesystem::path FileManager::get_current_file(){
