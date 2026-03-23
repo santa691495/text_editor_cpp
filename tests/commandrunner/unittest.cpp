@@ -35,13 +35,13 @@ TEST(CommandRunner, RegisterCmdWrite){
 	CommandRunner cmdrunner(filemanager, gapbuffer, running);
 	
 	//le run command
-	cmdrunner.run(cmd_obj);
-		
-	//le verify
+	bool is_cmd_success = cmdrunner.run(cmd_obj);	
+	
 	bool is_file_read = filemanager.read_file(target_file, gapbuffer);
 	ASSERT_TRUE(is_file_read);
 
 	ASSERT_EQ(gapbuffer.get_text(), expected_text);
+	ASSERT_TRUE(is_cmd_success);	
 }
 
 TEST(CommandRunner, RegisterCmdRead){
@@ -69,10 +69,11 @@ TEST(CommandRunner, RegisterCmdRead){
 
 	CommandRunner cmdrunner(filemanager, gapbuffer, running);
 	
-	cmdrunner.run(cmd_obj);
+	bool is_cmd_success = cmdrunner.run(cmd_obj);
 
 	ASSERT_EQ(gapbuffer.get_text(), expected_text);
-
+	ASSERT_TRUE(is_cmd_success);	
+	
 } 
 
 

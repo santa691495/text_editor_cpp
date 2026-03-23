@@ -9,6 +9,7 @@
 #include "filemanager.h"
 #include "cmdrunner.h"
 
+//TODO for today: implement error handling then run tests again
 //TODO: add to handler functions
 //the other operations needed to complete 
 //the action (like UI class methods that switch the ui
@@ -27,38 +28,42 @@ GapBuffer CommandRunner::get_gb(){
 std::vector<std::string> CommandRunner::get_cmd_list(){
 	return cmd_list;
 }
-//FIXME: add error handling for writing and others --> DOING THIS NOW
+
 CommandRunner::CommandRunner(FileManager& fm, GapBuffer& gb, bool& run):
 	filemanager(fm),
 	gapbuffer(gb),
 	running(run)
 {
-	handlers["w"] = [this](CommandObject& cmd){	
+	handlers["w"] = [this](CommandObject& cmd) -> bool {	
 		if(cmd.args.empty()){
-			cmd.args[0] = filemanager.get_current_file;
+			cmd.args[0] = filemanager.get_current_file();
 		}
-		filemanager.write_file(cmd.args[0], gapbuffer);
+		return filemanager.write_file(cmd.args[0], gapbuffer);
 	};
 
-	handlers["o"] = [this](CommandObject& cmd){
-		filemanager.read_file(cmd.args[0], gapbuffer);
+	handlers["o"] = [this](CommandObject& cmd)-> bool {
+		return filemanager.read_file(cmd.args[0], gapbuffer);
 	};		
 
-	handlers["q"] = [this](CommandObject& cmd){
+	handlers["q"] = [this](CommandObject& cmd) -> bool{	
+		if(running == false){
+			return false;
+		}
+	
 		running = false;
+		return true;
 	};
 
 }
-
-//iterates through the handlers
-void CommandRunner::run(CommandObject& cmd){
+//TODO: implement error handling then run tests again
+bool CommandRunner::run(CommandObject& cmd){
 	auto it = handlers.find(cmd.type);
 
 	if(it != handlers.end()){
-		it->second(cmd);
+		return it->second(cmd);
 	}
 
-	return;
+	return false;
 }	
 
 

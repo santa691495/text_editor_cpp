@@ -24,7 +24,7 @@ class CommandRunner {
 		static const std::vector<std::string> cmd_list;
 
 		//to relate command type to lambda function wrapping the class method
-		std::unordered_map<std::string, std::function<void(CommandObject& cmd)> > handlers;
+		std::unordered_map<std::string, std::function<bool(CommandObject& cmd)> > handlers;
 	
 	public:
 		FileManager get_fm();
@@ -32,7 +32,7 @@ class CommandRunner {
 		std::vector<std::string> get_cmd_list();
 	
 		CommandRunner(FileManager& fm, GapBuffer& gb, bool& run);	
-		void run(CommandObject& cmd);
+		bool run(CommandObject& cmd);
 };
 
 #endif //COMMAND_RUNNER
