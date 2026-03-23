@@ -1,2 +1,5 @@
 add_subdirectory(buffer)
 add_subdirectory(filemanager)
+add_subdirectory(commandobject)
+add_subdirectory(commandparser)
+add_subdirectory(commandrunner)
