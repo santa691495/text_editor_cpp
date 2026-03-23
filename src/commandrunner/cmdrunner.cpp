@@ -27,13 +27,16 @@ GapBuffer CommandRunner::get_gb(){
 std::vector<std::string> CommandRunner::get_cmd_list(){
 	return cmd_list;
 }
-//FIXME: add error handling for writing and others
+//FIXME: add error handling for writing and others --> DOING THIS NOW
 CommandRunner::CommandRunner(FileManager& fm, GapBuffer& gb, bool& run):
 	filemanager(fm),
 	gapbuffer(gb),
 	running(run)
 {
-	handlers["w"] = [this](CommandObject& cmd){
+	handlers["w"] = [this](CommandObject& cmd){	
+		if(cmd.args.empty()){
+			cmd.args[0] = filemanager.get_current_file;
+		}
 		filemanager.write_file(cmd.args[0], gapbuffer);
 	};
 
