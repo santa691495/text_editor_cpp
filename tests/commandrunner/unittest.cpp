@@ -2,10 +2,13 @@
 #include "filemanager.h"
 #include "cmd_obj.h"
 #include "cmdrunner.h"
+#include "cmdtype.h"
+#include "cmdstatus.h"
 #include "gtest/gtest.h"
 #include <string>
 #include <filesystem>
 #include <fstream>
+//TODO: Rewrite tests to adjust for new diagnostics implementation for command runners
 //must write to file
 TEST(CommandRunner, RegisterCmdWrite){
 	
@@ -18,7 +21,7 @@ TEST(CommandRunner, RegisterCmdWrite){
 	bool running = true;
 	GapBuffer gapbuffer;
 	
-	std::string expected_text = "qwerty"; //target and gap must have this
+	std::string expected_text = "qwerty"; 	
 	for(char ch : expected_text){
 		gapbuffer.insert(ch);
 	}
@@ -35,13 +38,14 @@ TEST(CommandRunner, RegisterCmdWrite){
 	CommandRunner cmdrunner(filemanager, gapbuffer, running);
 	
 	//le run command
-	bool is_cmd_success = cmdrunner.run(cmd_obj);	
+	CmdStatusObject cmd_status = cmdrunner.run(cmd_obj);	
 	
 	bool is_file_read = filemanager.read_file(target_file, gapbuffer);
 	ASSERT_TRUE(is_file_read);
-
+	
 	ASSERT_EQ(gapbuffer.get_text(), expected_text);
-	ASSERT_TRUE(is_cmd_success);	
+	EXPECT_TRUE(cmd_status.success);
+	EXPECT_EQ(cmd_status.cmd_type, CmdType::write);
 }
 
 TEST(CommandRunner, RegisterCmdRead){
@@ -69,11 +73,11 @@ TEST(CommandRunner, RegisterCmdRead){
 
 	CommandRunner cmdrunner(filemanager, gapbuffer, running);
 	
-	bool is_cmd_success = cmdrunner.run(cmd_obj);
+	CmdStatusObject cmd_status = cmdrunner.run(cmd_obj);
 
 	ASSERT_EQ(gapbuffer.get_text(), expected_text);
-	ASSERT_TRUE(is_cmd_success);	
-	
+	EXPECT_TRUE(cmd_status.success);
+	EXPECT_EQ(cmd_status.cmd_type, CmdType::read);
 } 
 
 
