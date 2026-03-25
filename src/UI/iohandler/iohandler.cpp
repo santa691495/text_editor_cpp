@@ -3,15 +3,21 @@
 #include <string>
 #include <sstream>
 
+#define CTRL(k) ((k) & 0x1f)	
+IOHandler::IOHandler(){
+	buffer_str.reserve(2000);
+	cmd_str.reserve(2000);
+}
+
 void IOHandler::handle_input(){
 	
 	char input_ch;
 	bool cmd_mode;
 	//stops when input is timed out
 	while(input_ch = getch()){
-		buffered_str.push_back(input_ch);
+		buffer_str.push_back(input_ch);
 
-		if(input_ch == KEY_CTRL) cmd_mode = true;
+		if(input_ch == CTRL('c')) cmd_mode = true;
 
 		if(cmd_mode){
 			if(input_ch = '\n'){

@@ -14,9 +14,11 @@ class IOHandler {
 		std::string buffer_str;
 		std::string cmd_str;
 
-	public:
+	public:	
+
+		IOHandler();
 		void handle_input();
-		std::string get_cmd_str()
+		std::string get_cmd_str();
 		std::string get_buffer_str();
 		
 };
