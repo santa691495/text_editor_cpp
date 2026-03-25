@@ -12,6 +12,12 @@ target_sources(iohandler
 		iohandler.h
 )
 
-target_link_libraries( iohandler PRIVATE ${CURSES_LIBRARIES} )
+target_link_libraries( iohandler 
+		
+		cmdtype
+		cmdstatus
+		${CURSES_LIBRARIES} 
+
+)
 
 
