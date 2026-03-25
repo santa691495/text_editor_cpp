@@ -13,11 +13,9 @@ target_sources(iohandler
 )
 
 target_link_libraries( iohandler 
-		
 		cmdtype
 		cmdstatus
 		${CURSES_LIBRARIES} 
-
 )
 
 

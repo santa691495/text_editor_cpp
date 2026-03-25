@@ -15,7 +15,7 @@ IOHandler::IOHandler(){
 void IOHandler::handle_input(){
 	
 	char input_ch;
-	bool cmd_mode;
+	bool cmd_mode = false;
 	//stops when input is timed out
 	while(input_ch = getch()){
 		buffer_str.push_back(input_ch);
@@ -54,7 +54,7 @@ std::string IOHandler::parse_cmd_status(CmdStatusObject cmd_status){
 	}
 	
 	if(cmd_status.cmd_type == CmdType::write){
-		type_string = "written files";
+		type_string = "written file";
 	} else if(cmd_status.cmd_type == CmdType::read){
 		type_string = "read file";
 	} else if(cmd_status.cmd_type == CmdType::quit){
