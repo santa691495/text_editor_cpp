@@ -1,18 +1,16 @@
 #include <string>
-#include <vector>
 #include <functional>
 #include <unordered_map>
 #include <iterator>
 #include <algorithm>
+#include <utility>
 #include "cmd_obj.h"
 #include "gapbuffer.h"
 #include "filemanager.h"
 #include "cmdrunner.h"
+#include "cmdtype.h"
+#include "cmdstatus.h"
 
-//TODO for today: implement error handling then run tests again
-//TODO: add to handler functions
-//the other operations needed to complete 
-//the action (like UI class methods that switch the ui
 const std::vector<std::string> CommandRunner::cmd_list = {"w", "o", "q"};
 
 FileManager CommandRunner::get_fm(){
@@ -34,36 +32,47 @@ CommandRunner::CommandRunner(FileManager& fm, GapBuffer& gb, bool& run):
 	gapbuffer(gb),
 	running(run)
 {
-	handlers["w"] = [this](CommandObject& cmd) -> bool {	
+	handlers["w"] = [this](CommandObject& cmd) -> CmdStatusObject{	
 		if(cmd.args.empty()){
 			cmd.args[0] = filemanager.get_current_file();
 		}
-		return filemanager.write_file(cmd.args[0], gapbuffer);
+		bool is_written = filemanager.write_file(cmd.args[0], gapbuffer);
+
+		CmdStatusObject write_status(CmdType::write, is_written);
+		return write_status;
 	};
 
-	handlers["o"] = [this](CommandObject& cmd)-> bool {
-		return filemanager.read_file(cmd.args[0], gapbuffer);
+	handlers["o"] = [this](CommandObject& cmd)-> CmdStatusObject {
+		bool is_read = filemanager.read_file(cmd.args[0], gapbuffer);
+		
+		CmdStatusObject read_status(CmdType::read, is_read);
+		return read_status;
 	};		
 
-	handlers["q"] = [this](CommandObject& cmd) -> bool{	
-		if(running == false){
-			return false;
-		}
-	
-		running = false;
-		return true;
-	};
+	handlers["q"] = [this](CommandObject& cmd) -> CmdStatusObject{
+		bool quit_success;
+		if(!running){	
+			quit_success = false;
+		}	
 
+		running = true;
+		quit_success = true;
+
+		CmdStatusObject quit_status(CmdType::quit, quit_success);
+		return quit_status;
+	};
 }
-//TODO: implement error handling then run tests again
-bool CommandRunner::run(CommandObject& cmd){
+
+CmdStatusObject CommandRunner::run(CommandObject& cmd){
 	auto it = handlers.find(cmd.type);
 
 	if(it != handlers.end()){
 		return it->second(cmd);
 	}
-
-	return false;
+	
+	CmdStatusObject failed(CmdType::null, false);
+	
+	return failed;
 }	
 
 
