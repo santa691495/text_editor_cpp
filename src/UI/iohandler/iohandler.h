@@ -1,6 +1,9 @@
 #include <ncurses.h>
 #include <string>
 #include <vector>
+#include "cmdstatus.h"
+#include "cmdtype.h"
+
 //io handler just waits for input thats it 
 //also catches output from subsystems 
 //	for example, run() returns false, then 
@@ -21,6 +24,7 @@ class IOHandler {
 		std::string get_cmd_str();
 		std::string get_buffer_str();
 		
+		std::string parse_cmd_status(CmdStatusObject cmd_status);		
 };
 
 #endif //IO_HANDLER
