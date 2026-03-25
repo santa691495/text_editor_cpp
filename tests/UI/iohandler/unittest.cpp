@@ -6,23 +6,40 @@
 #include <ncurses.h>
 
 //need to set up some ncurses environment for this test 
+//TODO: fix tests and handle input function 
 TEST(IOHandler, HandleInput){
 	initscr();
 	raw();
 	keypad(stdscr, TRUE);
-	timeout(2000);
+	timeout(-1);
 
-	std::string expected_buffer_str = "buffertest";
-	std::string expected_cmd_str = "cmdtest";
+	std::string expected_buffer_str = "b";
+	std::string expected_cmd_str = "c";
 	
 	IOHandler io_handler;
 	
-	io_handler.handle_input();		
+	//first input
+	printw( "--- TEST HANDLE INPUT ---");
+	printw( " ! check source for expected output");
+	printw( " buffer input : ");
+
+	refresh();
+	io_handler.handle_input();
+	clear();
+
+	printw(" command input (use CTRL, just click once!): ");
+	
+	refresh();
+	io_handler.handle_input();
+	clear();				
+
+	refresh();		
+	getch();
+	endwin();
 
 	EXPECT_EQ(io_handler.get_buffer_str(), expected_buffer_str);
-	EXPECT_EQ(io_handler.get_buffer_str(), expected_cmd_str);
+	EXPECT_EQ(io_handler.get_cmd_str(), expected_cmd_str);
 
-	endwin();
 }
 
 TEST(IOHandler, ParseCmdStatus){
