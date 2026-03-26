@@ -4,6 +4,8 @@ project(text_editor)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+find_package(Curses REQUIRED)
+
 enable_testing()
 
 add_subdirectory(gtest)
