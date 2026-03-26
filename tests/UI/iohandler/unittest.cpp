@@ -11,7 +11,6 @@ TEST(IOHandler, HandleInput){
 	initscr();
 	raw();
 	keypad(stdscr, TRUE);
-	timeout(-1);
 
 	std::string expected_buffer_str = "b";
 	std::string expected_cmd_str = "c";
@@ -21,17 +20,42 @@ TEST(IOHandler, HandleInput){
 	//first input
 	printw( "--- TEST HANDLE INPUT ---");
 	printw( " ! check source for expected output");
-	printw( " buffer input : ");
+	printw( " buffer input (enter b): ");
 
 	refresh();
 	io_handler.handle_input();
 	clear();
 
-	printw(" command input (use CTRL, just click once!): ");
+	printw(" command input (use CTRL + e , just click once!): ");
 	
 	refresh();
 	io_handler.handle_input();
-	clear();				
+	clear();		
+	
+	EXPECT_TRUE(io_handler.is_cmd_mode());
+
+	printw(" command input (enter 'c'): ");
+
+	refresh();
+	io_handler.handle_input();
+	clear();
+
+	printw(" command input (press ENTER): ");
+
+	refresh();
+	io_handler.handle_input();
+	clear();
+
+
+	EXPECT_TRUE(!io_handler.is_cmd_mode());
+	
+	printw("Expected string: %s \n", expected_buffer_str.c_str());
+	printw("Recieved string: %s \n", io_handler.get_buffer_str().c_str());
+
+	printw("Expected string: %s \n", expected_cmd_str.c_str());
+	printw("Recieved string: %s \n", io_handler.get_cmd_str().c_str());
+	
+	printw("\n\n\nPress any character to exit. ");
 
 	refresh();		
 	getch();

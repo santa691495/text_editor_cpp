@@ -16,6 +16,7 @@ class IOHandler {
 	private:
 		std::string buffer_str;
 		std::string cmd_str;
+		bool cmd_mode = false;
 
 	public:	
 
@@ -24,7 +25,8 @@ class IOHandler {
 		std::string get_cmd_str();
 		std::string get_buffer_str();
 		
-		std::string parse_cmd_status(CmdStatusObject cmd_status);		
+		std::string parse_cmd_status(CmdStatusObject cmd_status);	
+		bool is_cmd_mode();		
 };
 
 #endif //IO_HANDLER

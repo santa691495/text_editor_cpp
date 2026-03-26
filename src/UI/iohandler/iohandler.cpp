@@ -15,22 +15,28 @@ IOHandler::IOHandler(){
 void IOHandler::handle_input(){
 	
 	char input_ch;
-	bool cmd_mode = false;
-	//stops when input is timed out
-	while(input_ch = getch()){
-		buffer_str.push_back(input_ch);
 
-		if(input_ch == CTRL('c')) cmd_mode = true;
+	input_ch = getch();
 
-		if(cmd_mode){
-			if(input_ch = '\n'){
-				cmd_mode = false;
-				break;
-			}
-			cmd_str.push_back(input_ch);
+	if(input_ch == ERR){
+		return;
+	}
+	
+	if(cmd_mode){
+		if(input_ch == '\n'){
+			cmd_mode = false;
+			return;
 		}
+		cmd_str.push_back(input_ch);
+		return;
 	}
 
+	if(input_ch == CTRL('e')){
+		cmd_mode = true;
+		return;
+	}	
+
+	buffer_str.push_back(input_ch);
 }
 
 std::string IOHandler::get_cmd_str(){
@@ -54,7 +60,7 @@ std::string IOHandler::parse_cmd_status(CmdStatusObject cmd_status){
 	}
 	
 	if(cmd_status.cmd_type == CmdType::write){
-		type_string = "written file";
+		type_string = "write file";
 	} else if(cmd_status.cmd_type == CmdType::read){
 		type_string = "read file";
 	} else if(cmd_status.cmd_type == CmdType::quit){
@@ -65,7 +71,9 @@ std::string IOHandler::parse_cmd_status(CmdStatusObject cmd_status){
 	return cmd_status_string;
 }
 
-
+bool IOHandler::is_cmd_mode(){
+	return cmd_mode;
+}
 
 
 
