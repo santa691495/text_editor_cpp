@@ -3,6 +3,15 @@
 
 #ifndef GAP_BUFFER
 #define GAP_BUFFER
+	
+/*
+ GapBuffer
+
+	Responsible for manipulating the state of the program's text buffer 
+	implementation using a gap buffer, the primary data structure used to 
+	store editable text. 
+
+*/
 
 class GapBuffer {
 	private:

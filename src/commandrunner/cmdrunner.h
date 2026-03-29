@@ -9,11 +9,11 @@
 #include "gapbuffer.h"
 #include "filemanager.h"
 /*
-	Command Runner
-		
-	responsible for interpreting CommandObject objects
-	and running commands associated with the command object, such as
-	writing, reading, and exiting the editor, to name a few.
+Command Runner
+	Resonsible for interpreting CommandObject objects to call methods
+	related to the currently bound gapbuffer and filemanager to the IOHandler
+	object, and manipulate state related to the program (e.g. whether the program is running
+	or not).		
 */
 
 #ifndef COMMAND_RUNNER
