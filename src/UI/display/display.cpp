@@ -8,6 +8,7 @@ void Display::render_buffer(std::string& buffer_text){
 	
 	const char* c_text = buffer_text.c_str();
 	printw("%s", c_text);
+	refresh();
 }
 
 void Display::render_cmd_mode(bool& is_cmd_mode){
@@ -21,7 +22,7 @@ void Display::render_cmd_mode(bool& is_cmd_mode){
 	getmaxyx(stdscr, scr_height, scr_width);
 		
 	int win_height = 3;
-	int win_width = scr_width;
+	int win_width = scr_width - 3;
 	
 	int start_y = scr_height - 3;
 	int start_x = 0;
@@ -30,12 +31,12 @@ void Display::render_cmd_mode(bool& is_cmd_mode){
 
 	box(cmd_win, 0, 0);
 
-	wmove(cmd_win, start_y + 1, start_x + 1);
+	wmove(cmd_win, 1 , 1);
 	
-	refresh();	
+	wrefresh(cmd_win);	
 	
 	if(!is_cmd_mode){
-		clear();
+		wclear(cmd_win);
 		delwin(cmd_win);
 	}
 }
