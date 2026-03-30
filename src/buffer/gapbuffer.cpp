@@ -3,6 +3,13 @@
 #include <algorithm>
 #include "gapbuffer.h"
 
+GapBuffer::GapBuffer():
+	gap_start(&buffer[0]),
+	gap_end(buffer.data() + buffer.size())
+{
+	buffer.reserve(4000);
+}
+
 void GapBuffer::insert(char data){
 	*gap_start = data;
 	gap_start += 1;
@@ -13,13 +20,11 @@ void GapBuffer::move_left(){
 		return;
 	}
 	
-	//check left side
 	char* target {gap_start-1};
 	
-	//move to rightmost side of the gap (right before gap end)
 	char* rightmost {gap_end-1};
 	*rightmost = *target;
-	//move gap start and gap_right to the left
+
 	gap_start -= 1;
 	gap_end -= 1;
 }
@@ -91,7 +96,7 @@ void GapBuffer::grow(){
 
 std::string GapBuffer::get_text(){
 	std::string text;
-	//find the amount to reserve
+	
 	
 	size_t current_gap_size = gap_end - gap_start;
 	size_t reserve_amnt = buffer.size()-current_gap_size;

@@ -12,7 +12,6 @@
 	store editable text. 
 
 */
-
 class GapBuffer {
 	private:
 		std::vector<char> buffer;
@@ -21,12 +20,7 @@ class GapBuffer {
 		char* gap_end = nullptr;
 
 	public:
-		GapBuffer():
-		buffer{std::vector<char>(init_buffer_size)},
-		gap_start{&buffer[0]},
-		gap_end{buffer.data() + buffer.size()}
-
-		{}
+		GapBuffer();
 	
 		void insert(char data);
 		void move_left();
@@ -34,7 +28,7 @@ class GapBuffer {
 		void move_cursor(size_t index);
 		void grow();
 		std::string get_text();	
-		size_t get_current_size(); //todo
+		size_t get_current_size(); 
 		void backspace();
 		void clear();	
 };
