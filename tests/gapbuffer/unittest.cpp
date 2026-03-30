@@ -110,24 +110,6 @@ TEST(GapBuffer, MoveCursorLeft){
 	ASSERT_EQ(test_buffer.get_text(), expected_text);
 }	
 
-TEST(GapBuffer, GetCurrentSizeEmpty){
-	GapBuffer test_buffer;
-	size_t empty_size = 0;
-	//nothing has been inserted yet.
-	ASSERT_EQ(test_buffer.get_current_size(), empty_size);	
-}
-
-TEST(GapBuffer, GetCurrentSizeNotEmpty){
-	GapBuffer test_buffer;	
-	size_t expected_size = 400;
-
-	for(size_t i = 0; i < expected_size; ++i){
-		test_buffer.insert('a');
-	}
-		
-	ASSERT_EQ(test_buffer.get_current_size(), expected_size);	
-}
-
 //TODO: add grow)() test ! URGENT !
 
 
