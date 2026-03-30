@@ -89,6 +89,16 @@ void GapBuffer::grow(){
 	gap_end = new_gap_end;
 }
 
+bool GapBuffer::is_growable(){
+	std::string current_text { get_text() };
+	
+	if(current_text.size() < get_current_size()){
+		return false;
+	} 
+
+	return true;
+}
+
 std::string GapBuffer::get_text(){
 	std::string text;
 	//find the amount to reserve
