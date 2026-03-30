@@ -16,7 +16,7 @@
 class GapBuffer {
 	private:
 		std::vector<char> buffer;
-		static constexpr int init_buffer_size = 4000;
+		static constexpr size_t init_buffer_size = 4000;
 		char* gap_start = nullptr;
 		char* gap_end = nullptr;
 
@@ -33,9 +33,10 @@ class GapBuffer {
 		void move_right();
 		void move_cursor(size_t index);
 		void grow();
-		std::string get_text();
+		std::string get_text();	
+		size_t get_current_size(); //todo
 		void backspace();
-		void clear();
+		void clear();	
 };
 
 #endif //GAP_BUFFER

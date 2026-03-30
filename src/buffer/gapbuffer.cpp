@@ -107,6 +107,11 @@ std::string GapBuffer::get_text(){
 	text.append(gap_end, right_size);
 	
 	return text;
+}	
+
+size_t GapBuffer::get_current_size(){
+	size_t current_size {buffer.size()};
+	return current_size;
 }
 
 void GapBuffer::backspace(){
