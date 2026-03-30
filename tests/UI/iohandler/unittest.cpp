@@ -6,16 +6,20 @@
 #include <ncurses.h>
 
 TEST(IOHandler, HandleInputBuffer){
+
+	//screen setup ===================
+	
 	initscr();
 	raw();
 	keypad(stdscr, TRUE);
 
+	//===================
+	
 	std::string expected_buffer_str = "b";
-	std::string expected_cmd_str = "c";
 	
 	IOHandler io_handler;
 	
-	printw( "--- TEST HANDLE INPUT ---");
+	printw( "--- TEST BUFFER INPUT ---");
 	printw( " ! check source for expected output");
 	printw( " buffer input (enter b): ");
 
@@ -23,6 +27,41 @@ TEST(IOHandler, HandleInputBuffer){
 	io_handler.handle_input();
 	clear();
 
+	printw("Expected string: %s \n", expected_buffer_str.c_str());
+	printw("Recieved string: %s \n", io_handler.get_buffer_str().c_str());
+	
+	printw("\n\n\nPress any character to exit. ");
+		
+	refresh();
+	getch();
+	
+	//screen teardown ------------------
+		
+	clear();
+	refresh();		
+	endwin();
+
+	//------------------
+	
+	ASSERT_EQ(io_handler.get_buffer_str(), expected_buffer_str);
+
+}
+
+TEST(IOHandler, HandleInputCmd){
+	
+	//screen setup ===================
+	
+	initscr();
+	raw();
+	keypad(stdscr, TRUE);
+
+	//===================
+	
+	std::string expected_cmd_str = "c";
+	IOHandler io_handler;
+
+	printw( "--- TEST COMMAND INPUT ---");
+	printw( " ! check source for expected output");
 	printw(" command input (use CTRL + e , just click once!): ");
 	
 	refresh();
@@ -43,25 +82,29 @@ TEST(IOHandler, HandleInputBuffer){
 	io_handler.handle_input();
 	clear();
 
-
 	EXPECT_TRUE(!io_handler.is_cmd_mode());
 	
-	printw("Expected string: %s \n", expected_buffer_str.c_str());
-	printw("Recieved string: %s \n", io_handler.get_buffer_str().c_str());
+	clear();
 
 	printw("Expected string: %s \n", expected_cmd_str.c_str());
 	printw("Recieved string: %s \n", io_handler.get_cmd_str().c_str());
-	
+		
 	printw("\n\n\nPress any character to exit. ");
-
-	refresh();		
+	
+	refresh();
 	getch();
+
+	//screen teardown ------------------
+
+	clear();
+	refresh();		
 	endwin();
 
-	ASSERT_EQ(io_handler.get_buffer_str(), expected_buffer_str);
+	//------------------
+	
 	ASSERT_EQ(io_handler.get_cmd_str(), expected_cmd_str);
 
-}
+}	
 
 TEST(IOHandler, ParseCmdStatus){
 	CmdStatusObject rsuccess(CmdType::read, true);
