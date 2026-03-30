@@ -5,9 +5,7 @@
 #include <string>
 #include <ncurses.h>
 
-//need to set up some ncurses environment for this test 
-//TODO: fix tests and handle input function 
-TEST(IOHandler, HandleInput){
+TEST(IOHandler, HandleInputBuffer){
 	initscr();
 	raw();
 	keypad(stdscr, TRUE);
@@ -17,7 +15,6 @@ TEST(IOHandler, HandleInput){
 	
 	IOHandler io_handler;
 	
-	//first input
 	printw( "--- TEST HANDLE INPUT ---");
 	printw( " ! check source for expected output");
 	printw( " buffer input (enter b): ");
@@ -61,8 +58,8 @@ TEST(IOHandler, HandleInput){
 	getch();
 	endwin();
 
-	EXPECT_EQ(io_handler.get_buffer_str(), expected_buffer_str);
-	EXPECT_EQ(io_handler.get_cmd_str(), expected_cmd_str);
+	ASSERT_EQ(io_handler.get_buffer_str(), expected_buffer_str);
+	ASSERT_EQ(io_handler.get_cmd_str(), expected_cmd_str);
 
 }
 
@@ -74,7 +71,7 @@ TEST(IOHandler, ParseCmdStatus){
 
 	IOHandler io_handler;
 	
-	EXPECT_EQ(io_handler.parse_cmd_status(rsuccess), expected_rsuccess);
-	EXPECT_EQ(io_handler.parse_cmd_status(wfail), expected_wfail);
+	ASSERT_EQ(io_handler.parse_cmd_status(rsuccess), expected_rsuccess);
+	ASSERT_EQ(io_handler.parse_cmd_status(wfail), expected_wfail);
 	
 }

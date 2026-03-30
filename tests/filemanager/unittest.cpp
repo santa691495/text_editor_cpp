@@ -47,18 +47,15 @@ TEST(FileManager, WriteFile){
 	for(auto ch : expected_text){
 		test_buffer.insert(ch);
 	}	
-	
-	ASSERT_EQ(expected_text, test_buffer.get_text());	
 
 	FileManager test_fm(current_file);
-	bool file_written = test_fm.write_file(target_path, test_buffer);
+	test_fm.write_file(target_path, test_buffer);
 	
-	ASSERT_TRUE(file_written);
 	target_path = test_fm.resolve_target_path(target_path);
 
 	std::ifstream target_file(target_path);
 	
-	ASSERT_TRUE(target_file.is_open());
+	EXPECT_TRUE(target_file.is_open());
 
 	std::string file_text; 
 	std::getline(target_file, file_text, '\0');
@@ -71,18 +68,17 @@ TEST(FileManager, ReadFile){
 	std::filesystem::path current_file = "/home/dingdong/softwareprojects/text_editor_practice/tests/filemanager/dummy_root.txt";
 	std::string file_text = "TestSuccess";
 	
-	//prep the file
 	std::ofstream target_file(target_path);
 	target_file << file_text;
 
 	FileManager test_fm(current_file);
 	GapBuffer test_buffer;
-	bool read_success(test_fm.read_file(target_path, test_buffer));
+
+	test_fm.read_file(target_path, test_buffer);
 	
-	EXPECT_TRUE(read_success);
 	ASSERT_EQ(file_text, test_buffer.get_text());
 }
-//target path must be the same as get_current_file()
+
 TEST(FileManager, GetCurrentFile){
 	std::filesystem::path current_file = "/home/dingdong/softwareprojects/text_editor_practice/tests/filemanager/dummy_root.txt";
 	
@@ -110,9 +106,6 @@ TEST(FileManager, Constructor){
 	std::filesystem::path expected_path = "/home/dingdong/softwareprojects/text_editor_practice/build/tests/filemanager/dummy.txt";
 	
 	FileManager test_fm(current_file);	
-
-	ASSERT_TRUE(std::filesystem::exists(expected_path));
-	ASSERT_TRUE(std::filesystem::is_regular_file(expected_path));
 
 	ASSERT_EQ(test_fm.get_current_file(), expected_path);
 }

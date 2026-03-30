@@ -19,7 +19,7 @@ TEST(GapBuffer, ConsecutiveInsertion){
 	expected_text += y;
 	expected_text += z;
 
-	EXPECT_EQ(test_buffer.get_text(), expected_text);
+	ASSERT_EQ(test_buffer.get_text(), expected_text);
 }
 //passed
 TEST(GapBuffer, MovementLeft){
@@ -41,7 +41,7 @@ TEST(GapBuffer, MovementLeft){
 	expected_text += z;
 	expected_text += y;
 
-	EXPECT_EQ(test_buffer.get_text(), expected_text);
+	ASSERT_EQ(test_buffer.get_text(), expected_text);
 }
 //passed
 TEST(GapBuffer, MovementRight){
@@ -65,10 +65,9 @@ TEST(GapBuffer, MovementRight){
 	expected_text += z;
 	expected_text += y;
 
-	EXPECT_EQ(test_buffer.get_text(), expected_text);
+	ASSERT_EQ(test_buffer.get_text(), expected_text);
 }
-//passed
-//FIXME: make expected_text the sum of default and inserted to make it more dynamic
+
 TEST(GapBuffer, MoveCursorRight){
 	GapBuffer test_buffer;
 	std::string default_text = "qwertyuiop";
@@ -86,9 +85,9 @@ TEST(GapBuffer, MoveCursorRight){
 		test_buffer.insert(ch);
 	}
 
-	EXPECT_EQ(test_buffer.get_text(), expected_text);
+	ASSERT_EQ(test_buffer.get_text(), expected_text);
 }
-//passed
+
 TEST(GapBuffer, MoveCursorLeft){
 	GapBuffer test_buffer;
 	std::string default_text = "qwertyuiop";
@@ -108,15 +107,11 @@ TEST(GapBuffer, MoveCursorLeft){
 		test_buffer.insert(ch);
 	}
 
-	EXPECT_EQ(test_buffer.get_text(), expected_text);
+	ASSERT_EQ(test_buffer.get_text(), expected_text);
 }
 
 TEST(GapBuffer, Grow){
-	GapBuffer test_buffer;
 	
-	//needto fill with 4k lines of text
-	//need to change this to something smaller for this test only!
-	//or just actually fill it with 4k lines 
 }
 
 
