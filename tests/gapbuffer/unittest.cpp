@@ -117,7 +117,28 @@ TEST(GapBuffer, Grow){
 	test_buffer.grow();
 	ASSERT_EQ(expected_size, test_buffer.get_current_size());
 
+}
+
+TEST(GapBuffer, Backspace){
+	GapBuffer test_buffer;
+	std::string buffer_str = "qwerty";
+	std::string expected_string = "qwert";
+		
+	for(char& ch : buffer_str){
+		test_buffer.insert(ch);
+	}
+
+	test_buffer.backspace();		
+	ASSERT_EQ(test_buffer.get_text(), expected_string);
 }	
+
+TEST(GapBuffer, BackspaceEmpty){
+	GapBuffer test_buffer;
+	std::string expected_string = "";
+		
+	test_buffer.backspace();		
+	ASSERT_EQ(test_buffer.get_text(), expected_string);
+}
 
 TEST(GapBuffer, IsGrowablePositive){
 	GapBuffer test_buffer;	
