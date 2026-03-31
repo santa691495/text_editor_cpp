@@ -111,8 +111,37 @@ TEST(GapBuffer, MoveCursorLeft){
 }
 
 TEST(GapBuffer, Grow){
+	GapBuffer test_buffer;
+	size_t expected_size = test_buffer.get_current_size() * 2;
 	
-}
+	test_buffer.grow();
+	ASSERT_EQ(expected_size, test_buffer.get_current_size());
+
+}	
+
+TEST(GapBuffer, IsGrowablePositive){
+	GapBuffer test_buffer;	
+	size_t max_size =  test_buffer.get_current_size();
+
+	for(size_t i = 0; i < max_size; ++i){
+		test_buffer.insert('a');
+	}	
+
+	ASSERT_TRUE(test_buffer.is_growable());
+}	
+
+TEST(GapBuffer, IsGrowableNegative){
+	GapBuffer test_buffer;	
+	size_t max_size =  test_buffer.get_current_size();
+
+	for(size_t i = 1; i < max_size; ++i){
+		test_buffer.insert('a');
+	}	
+
+	ASSERT_FALSE(test_buffer.is_growable());
+}	
+
+
 
 
 
