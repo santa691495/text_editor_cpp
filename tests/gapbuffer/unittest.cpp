@@ -2,7 +2,7 @@
 #include <vector>
 #include "gapbuffer.h"
 #include "gtest/gtest.h"
-//passed
+
 TEST(GapBuffer, ConsecutiveInsertion){
 	char x  ='a';
 	char y  ='b';
@@ -21,7 +21,7 @@ TEST(GapBuffer, ConsecutiveInsertion){
 
 	ASSERT_EQ(test_buffer.get_text(), expected_text);
 }
-//passed
+
 TEST(GapBuffer, MovementLeft){
 	GapBuffer test_buffer;
 
@@ -43,7 +43,7 @@ TEST(GapBuffer, MovementLeft){
 
 	ASSERT_EQ(test_buffer.get_text(), expected_text);
 }
-//passed
+
 TEST(GapBuffer, MovementRight){
 	GapBuffer test_buffer;
 
@@ -108,12 +108,9 @@ TEST(GapBuffer, MoveCursorLeft){
 	}
 
 	ASSERT_EQ(test_buffer.get_text(), expected_text);
-}
+}	
 
-TEST(GapBuffer, Grow){
-	
-}
-
+//TODO: add grow)() test ! URGENT !
 
 
 
