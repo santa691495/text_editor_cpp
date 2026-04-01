@@ -63,24 +63,24 @@ void GapBuffer::move_cursor(size_t index){
 void GapBuffer::grow(){
 	size_t new_gap_size {buffer.size()};
 	
-	char* old_base {&buffer[0]};
-	char* old_end {buffer.data() + buffer.size()};
+	char* old_base = buffer.data();
+	char* old_end = old_base + buffer.size();
 
 	std::vector<char> new_buffer(buffer.size()*2); 
-	char* new_base {&new_buffer[0]};
+	char* new_base = new_buffer.data();
 
 	size_t left_size = gap_start - old_base;
 	size_t right_size = old_end - gap_end;
 	
-	char* new_gap_start {new_base + left_size};
-	char* new_gap_end {new_gap_start + new_gap_size};
+	char* new_gap_start = new_base + left_size;
+	char* new_gap_end  = new_base + new_buffer.size() - right_size;
 	 
 	for(char* src = old_base, *dst = new_base; src < gap_start; ++src, ++dst){
-		*src = *dst;
+		*dst = *src;
 	}
 
 	for(char* src = gap_end, *dst = new_gap_end; src < old_end; ++src, ++dst){
-		*src = *dst;
+		*dst = *src;
 	}
 
 	buffer = std::move(new_buffer);
@@ -101,15 +101,14 @@ bool GapBuffer::is_growable(){
 
 std::string GapBuffer::get_text(){
 	std::string text;
-	//find the amount to reserve
 	
 	size_t current_gap_size = gap_end - gap_start;
-	size_t reserve_amnt = buffer.size()-current_gap_size;
-	
+	size_t reserve_amnt = buffer.size() - current_gap_size;
 	text.reserve(reserve_amnt);
 	
-	char* buffer_start {&buffer[0]};
-	char* buffer_end {buffer.data()+buffer.size()};
+	char* buffer_start = buffer.data();
+	char* buffer_end = buffer.data() + buffer.size();
+	
 	size_t left_size = gap_start - buffer_start;
 	size_t right_size = buffer_end - gap_end;
 	
@@ -133,7 +132,7 @@ void GapBuffer::backspace(){
 }
 
 void GapBuffer::clear(){
-	gap_start = &buffer[0];
+	gap_start = buffer.data();
 	gap_end = buffer.data()+buffer.size();
 }
 
