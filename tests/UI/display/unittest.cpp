@@ -29,18 +29,17 @@ TEST(Display, RenderBuffer){
 
 TEST(Display, RenderCommandMode){
 	
-	bool cmd_mode = true;	
-	
-	std::string buffer_str = "TEST COMMAND MODE\npress any key to stop command"
+	std::string buffer_str = "TEST COMMAND MODE\npress any key twice to stop command"
 		" mode in this test.";
 
 	initscr();
 
 	Display display_obj;	
 	display_obj.render_buffer(buffer_str);
-	display_obj.render_cmd_mode(cmd_mode);
+	display_obj.render_cmd_mode();
 
-	getch();	
+	getch();
+	getch();
 	
 	clear();
 	printw("%s", "test passed? y/n : ");
@@ -55,23 +54,22 @@ TEST(Display, RenderCommandMode){
 }
 
 TEST(Display, RenderCommandStatus){
+
+	CmdStatusObject cmd_status(CmdType::write, true);
 		
 	std::string buffer_str = "TEST COMMAND STATUS\npress any key to stop"
 		" this test."
 		"\n\ntest must show the status"
 		" string provided in the test.";
 
-	std::string status_str = "success : write file";
-	bool cmd_mode = false;
+	std::string status_str = "success : write ";
 
-	//setup environment
 	Display display_obj;
 	display_obj.render_buffer(buffer_str);
 	
-	display_obj.render_cmd_status(status_str, cmd_mode);
+	display_obj.render_cmd_status(cmd_status);
 
 	getch();
-	cmd_mode = true;
 	
 	clear();
 	printw("%s", "test passed? y/n : ");

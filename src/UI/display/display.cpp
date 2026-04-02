@@ -13,7 +13,7 @@ Display::Display(){
 	int win_width = scr_width/4;
 	
 	int start_y = scr_height - 3;
-	int start_x = scr_width / 4;
+	int start_x = scr_width / 2 - (win_width / 2); //start at half, then move left by half the new win width
 
 	cmd_status_win = newwin(win_height, win_width, start_y, start_x);
 		
@@ -67,7 +67,7 @@ void Display::render_buffer(std::string& buffer_text){
 	printw("%s", c_text);
 	refresh();
 }
-//FIXME: fix window clearing, dont rely on cmd_mode!
+
 void Display::render_cmd_mode(){
 
 	box(cmd_mode_win, 0, 0);

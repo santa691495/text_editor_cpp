@@ -19,8 +19,6 @@
 #ifndef DISPLAY
 #define DISPLAY
 
-//TODO: make methods to construct and destruct 
-//windows created by display
 
 class Display {
 	private:
