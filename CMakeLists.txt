@@ -11,4 +11,4 @@ enable_testing()
 add_subdirectory(gtest)
 add_subdirectory(src)
 add_subdirectory(tests)
-
+add_subdirectory(integration_tests)

@@ -7,3 +7,5 @@ target_link_libraries(modify_buffer_test
 	gapbuffer
 )
 
+include(GoogleTest)
+gtest_discover_tests(modify_buffer_test)
