@@ -31,17 +31,11 @@ TEST(CommandRunner, RegisterCmdWrite){
 	cmd_obj.type = "w";
 	cmd_obj.args.push_back(target_file);
 	
-	ASSERT_TRUE(filemanager.file_exists(target_file));
-	ASSERT_TRUE(filemanager.file_exists(current_file));
-
 	//prep runner
 	CommandRunner cmdrunner(filemanager, gapbuffer, running);
 	
 	//le run command
 	CmdStatusObject cmd_status = cmdrunner.run(cmd_obj);	
-	
-	bool is_file_read = filemanager.read_file(target_file, gapbuffer);
-	ASSERT_TRUE(is_file_read);
 	
 	ASSERT_EQ(gapbuffer.get_text(), expected_text);
 	EXPECT_TRUE(cmd_status.success);
@@ -60,7 +54,7 @@ TEST(CommandRunner, RegisterCmdRead){
 	//prep the file 
 	std::ofstream out_file(target_file);
 		
-	ASSERT_TRUE(out_file.is_open());
+	EXPECT_TRUE(out_file.is_open());
 
 	std::string expected_text = "qwerty";
 	

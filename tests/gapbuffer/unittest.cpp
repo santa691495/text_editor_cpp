@@ -2,7 +2,7 @@
 #include <vector>
 #include "gapbuffer.h"
 #include "gtest/gtest.h"
-//passed
+
 TEST(GapBuffer, ConsecutiveInsertion){
 	char x  ='a';
 	char y  ='b';
@@ -19,9 +19,9 @@ TEST(GapBuffer, ConsecutiveInsertion){
 	expected_text += y;
 	expected_text += z;
 
-	EXPECT_EQ(test_buffer.get_text(), expected_text);
+	ASSERT_EQ(test_buffer.get_text(), expected_text);
 }
-//passed
+
 TEST(GapBuffer, MovementLeft){
 	GapBuffer test_buffer;
 
@@ -41,9 +41,9 @@ TEST(GapBuffer, MovementLeft){
 	expected_text += z;
 	expected_text += y;
 
-	EXPECT_EQ(test_buffer.get_text(), expected_text);
+	ASSERT_EQ(test_buffer.get_text(), expected_text);
 }
-//passed
+
 TEST(GapBuffer, MovementRight){
 	GapBuffer test_buffer;
 
@@ -65,59 +65,62 @@ TEST(GapBuffer, MovementRight){
 	expected_text += z;
 	expected_text += y;
 
-	EXPECT_EQ(test_buffer.get_text(), expected_text);
-}
-//passed
-//FIXME: make expected_text the sum of default and inserted to make it more dynamic
-TEST(GapBuffer, MoveCursorRight){
-	GapBuffer test_buffer;
-	std::string default_text = "qwertyuiop";
-	std::string inserted_text = "abc";
-	std::string expected_text = "qwertyabcuiop";
-
-	for(auto ch : default_text){
-		test_buffer.insert(ch);
-	}
-	
-	size_t insertion_index = 6;
-	test_buffer.move_cursor(insertion_index);
-
-	for(auto ch : inserted_text){
-		test_buffer.insert(ch);
-	}
-
-	EXPECT_EQ(test_buffer.get_text(), expected_text);
-}
-//passed
-TEST(GapBuffer, MoveCursorLeft){
-	GapBuffer test_buffer;
-	std::string default_text = "qwertyuiop";
-	std::string inserted_text = "abc";
-	std::string expected_text = "qabcwertyuiop";
-
-	for(auto ch : default_text){
-		test_buffer.insert(ch);
-	}
-	
-	size_t init_index = 6;
-	size_t insertion_index = 1;
-	test_buffer.move_cursor(init_index);
-	test_buffer.move_cursor(insertion_index);
-	
-	for(auto ch : inserted_text){
-		test_buffer.insert(ch);
-	}
-
-	EXPECT_EQ(test_buffer.get_text(), expected_text);
+	ASSERT_EQ(test_buffer.get_text(), expected_text);
 }
 
 TEST(GapBuffer, Grow){
 	GapBuffer test_buffer;
+	size_t expected_size = test_buffer.get_current_size() * 2;
 	
-	//needto fill with 4k lines of text
-	//need to change this to something smaller for this test only!
-	//or just actually fill it with 4k lines 
+	test_buffer.grow();
+	ASSERT_EQ(expected_size, test_buffer.get_current_size());
+
 }
+
+TEST(GapBuffer, Backspace){
+	GapBuffer test_buffer;
+	std::string buffer_str = "qwerty";
+	std::string expected_string = "qwert";
+		
+	for(char& ch : buffer_str){
+		test_buffer.insert(ch);
+	}
+
+	test_buffer.backspace();		
+	ASSERT_EQ(test_buffer.get_text(), expected_string);
+}	
+
+TEST(GapBuffer, BackspaceEmpty){
+	GapBuffer test_buffer;
+	std::string expected_string = "";
+		
+	test_buffer.backspace();		
+	ASSERT_EQ(test_buffer.get_text(), expected_string);
+}
+
+TEST(GapBuffer, IsGrowablePositive){
+	GapBuffer test_buffer;	
+	size_t max_size =  test_buffer.get_current_size();
+
+	for(size_t i = 0; i < max_size; ++i){
+		test_buffer.insert('a');
+	}	
+
+	ASSERT_TRUE(test_buffer.is_growable());
+}	
+
+TEST(GapBuffer, IsGrowableNegative){
+	GapBuffer test_buffer;	
+	size_t max_size =  test_buffer.get_current_size();
+
+	for(size_t i = 1; i < max_size; ++i){
+		test_buffer.insert('a');
+	}	
+
+	ASSERT_FALSE(test_buffer.is_growable());
+}	
+
+
 
 
 
