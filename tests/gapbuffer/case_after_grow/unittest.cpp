@@ -80,19 +80,52 @@ TEST(GapBuffer, MovementAfterGrow){
 
 }
 
-/*
-TEST(GapBuffer, IsGrowableAfterGrowNegative){
+TEST(GapBuffer, IsGrowableAfterGrowNot){
+	GapBuffer test_buffer;
+	size_t max_size = test_buffer.get_current_size();	
 
+	for(size_t i = 0; i < max_size; ++i){
+		test_buffer.insert('a');
+	}	
+
+	test_buffer.grow();
+	test_buffer.insert('a');
+
+	EXPECT_FALSE(test_buffer.is_growable());
 }		
 
-TEST(GapBuffer,  IsGrowableAfterGrowPositive){
+TEST(GapBuffer,  IsGrowableAfterGrow){
+	GapBuffer test_buffer;
+	size_t max_size = test_buffer.get_current_size();	
 
+	for(size_t i = 0; i < max_size; ++i){
+		test_buffer.insert('a');
+	}
+
+	test_buffer.grow();
+
+	size_t new_max_size = max_size * 2;
+	
+	for(size_t i = 0; i < max_size; ++i){
+		test_buffer.insert('a');
+	}
+
+	EXPECT_TRUE(test_buffer.is_growable());
 }
 
-TEST(GapBuffer, GetTextAfterGrow){
+TEST(GapBuffer, ClearAfterGrow){
+	std::string buffer_text = "qwertyuiop";
+	GapBuffer test_buffer;
+	
+	for(char& ch : buffer_text){
+		test_buffer.insert(ch);
+	}	
 
-}	
-*/
+	test_buffer.grow();
+	test_buffer.clear();
+
+	ASSERT_EQ(test_buffer.get_text(), "");
+}
 
 
 
