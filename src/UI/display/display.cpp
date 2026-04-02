@@ -3,6 +3,29 @@
 #include <ncurses.h>
 #include <string>
 
+Display::Display(){
+
+	int scr_height, scr_width;
+
+	getmaxyx(stdscr, scr_height, scr_width);
+		
+	int win_height = 1;
+	int win_width = scr_width/4;
+	
+	int start_y = scr_height - 3;
+	int start_x = scr_width / 4;
+
+	cmd_status_win = newwin(win_height, win_width, start_y, start_x);
+		
+	win_height = 3;
+	win_width = scr_width - 3;
+	
+	start_y = scr_height - 3;
+	start_x = 0;
+
+	cmd_mode_win = newwin(win_height, win_width, start_y, start_x);
+}
+
 std::string Display::format_cmd_status(CmdStatusObject& cmd_status){
 
 	std::string cmd_str;
@@ -37,68 +60,39 @@ std::string Display::format_cmd_status(CmdStatusObject& cmd_status){
 
 }
 
-// printw the current buffer
-
 void Display::render_buffer(std::string& buffer_text){
+	clear();
 	
 	const char* c_text = buffer_text.c_str();
 	printw("%s", c_text);
 	refresh();
 }
+//FIXME: fix window clearing, dont rely on cmd_mode!
+void Display::render_cmd_mode(){
 
-void Display::render_cmd_mode(bool& is_cmd_mode){
+	box(cmd_mode_win, 0, 0);
+	wmove(cmd_mode_win, 1 , 1);
+	wrefresh(cmd_mode_win);	
 	
-	if(!is_cmd_mode){
-		return;
-	}	
-	
-	int scr_height, scr_width;
-
-	getmaxyx(stdscr, scr_height, scr_width);
-		
-	int win_height = 3;
-	int win_width = scr_width - 3;
-	
-	int start_y = scr_height - 3;
-	int start_x = 0;
-	
-	WINDOW* cmd_win = newwin(win_height, win_width, start_y, start_x);
-
-	box(cmd_win, 0, 0);
-
-	wmove(cmd_win, 1 , 1);
-	
-	wrefresh(cmd_win);	
-	
-	if(!is_cmd_mode){
-		wclear(cmd_win);
-		delwin(cmd_win);
-	}
 }
 
 void Display::render_cmd_status(CmdStatusObject& cmd_status){
 
 	std::string status_text = format_cmd_status(cmd_status);
-
-	int scr_height, scr_width;
-
-	getmaxyx(stdscr, scr_height, scr_width);
-		
-	int win_height = 1;
-	int win_width = scr_width/4;
-	
-	int start_y = scr_height - 3;
-	int start_x = scr_width / 4;
-	
-	WINDOW* status_win = newwin(win_height, win_width, start_y, start_x);
 	
 	const char* c_text = status_text.c_str();	
 
-	wattron(status_win, A_STANDOUT);
-	wprintw(status_win,"%s", c_text);
-	wattroff(status_win, A_STANDOUT);
+	wattron(cmd_status_win, A_STANDOUT);
+	wprintw(cmd_status_win,"%s", c_text);
+	wattroff(cmd_status_win, A_STANDOUT);
 
-	wrefresh(status_win);
+	wrefresh(cmd_status_win);
 
 }
+
+Display::~Display(){
+	delwin(cmd_mode_win);
+	delwin(cmd_status_win);
+}
+
 

@@ -19,14 +19,27 @@
 #ifndef DISPLAY
 #define DISPLAY
 
+//TODO: make methods to construct and destruct 
+//windows created by display
+
 class Display {
+	private:
+
+		WINDOW* cmd_status_win;
+		WINDOW* cmd_mode_win;
+
 	public:
-		
+
+		Display();
+
 		void render_buffer(std::string& buffer_text);
-		void render_cmd_mode(bool& is_cmd_mode);
+		void render_cmd_mode();
 		void render_cmd_status(CmdStatusObject& cmd_status);
+
+		~Display();
 		
 	private:
+
 		std::string format_cmd_status(CmdStatusObject& cmd_status);
 };
 
