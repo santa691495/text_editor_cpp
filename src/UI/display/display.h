@@ -1,5 +1,6 @@
 #include <ncurses.h>
 #include <string>
+#include "cmdstatus.h"
 	
 /*
 	==================================
@@ -23,8 +24,10 @@ class Display {
 		
 		void render_buffer(std::string& buffer_text);
 		void render_cmd_mode(bool& is_cmd_mode);
-		void render_cmd_status(std::string& status_text, bool& is_cmd_mode);
-	
+		void render_cmd_status(CmdStatusObject& cmd_status);
+		
+	private:
+		std::string format_cmd_status(CmdStatusObject& cmd_status);
 };
 
 #endif //DISPLAY

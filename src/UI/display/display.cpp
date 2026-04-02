@@ -1,6 +1,41 @@
 #include "display.h"
+#include "cmdstatus.h"
 #include <ncurses.h>
 #include <string>
+
+std::string Display::format_cmd_status(CmdStatusObject& cmd_status){
+
+	std::string cmd_str;
+
+	if(cmd_status.success){
+		cmd_str += "success : ";
+	} else {
+		cmd_str += "failed : ";
+	}
+
+	switch (cmd_status.cmd_type)
+	{
+	case CmdType::write:
+			cmd_str += "write ";
+		break;
+
+	case CmdType::read:
+			cmd_str += "read ";
+		break;
+
+	case CmdType::quit:
+			cmd_str += "quit ";
+		break;
+	
+	case CmdType::null:
+			cmd_str += "null ";
+		break;
+	
+	}
+
+	return cmd_str;
+
+}
 
 // printw the current buffer
 
@@ -41,11 +76,9 @@ void Display::render_cmd_mode(bool& is_cmd_mode){
 	}
 }
 
-void Display::render_cmd_status(std::string& status_text, bool& cmd_mode){
-		
-	if(cmd_mode){
-		return;
-	}
+void Display::render_cmd_status(CmdStatusObject& cmd_status){
+
+	std::string status_text = format_cmd_status(cmd_status);
 
 	int scr_height, scr_width;
 
@@ -67,10 +100,5 @@ void Display::render_cmd_status(std::string& status_text, bool& cmd_mode){
 
 	wrefresh(status_win);
 
-	//TODO: replace this with a timer 
-	if(cmd_mode){
-		wclear(status_win);
-		delwin(status_win);
-	}
 }
 
