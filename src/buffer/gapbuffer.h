@@ -30,7 +30,6 @@ class GapBuffer {
 		void insert(char data);
 		void move_left();
 		void move_right();
-		void move_cursor(size_t index);
 		void grow();	
 		bool is_growable();
 
