@@ -16,7 +16,7 @@ InputEvent IOHandler::get_input() {
 			input.type = InputType::ctrl;
 		break;
 
-	case KEY_ENTER:
+	case '\n':
 			input.type = InputType::enter;
 		break;
 	
@@ -25,15 +25,15 @@ InputEvent IOHandler::get_input() {
 		break;
 
 	case KEY_UP:
-			input.type = InputType::arrow_right;
+			input.type = InputType::arrow_up;
 		break;
 		
 	case KEY_DOWN:
-			input.type = InputType::arrow_right;
+			input.type = InputType::arrow_down;
 		break;
 
 	case KEY_LEFT:
-			input.type = InputType::arrow_right;
+			input.type = InputType::arrow_left;
 		break;
 
 	case KEY_RIGHT:

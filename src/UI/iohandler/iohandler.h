@@ -1,6 +1,8 @@
 #include <ncurses.h>
 #include "inputevent.h"
 
+#define CTRL(k) ((k) & 0x1f)
+
 /*
 	
 IOHandler
@@ -25,7 +27,6 @@ IOHandler
 class IOHandler {
 	public:	
 
-		IOHandler();
 		InputEvent get_input();
 };
 
