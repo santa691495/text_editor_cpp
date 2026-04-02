@@ -48,5 +48,10 @@ InputEvent IOHandler::get_input() {
 	return input;
 }
 
+char IOHandler::get_cmd_input(WINDOW* cmd_mode_win){
+	int input_ch = wgetch(cmd_mode_win);
+
+	return input_ch;
+}
 
 

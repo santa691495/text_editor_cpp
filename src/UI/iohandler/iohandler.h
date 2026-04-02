@@ -20,6 +20,7 @@ class IOHandler {
 	public:	
 
 		InputEvent get_input();
+		char get_cmd_input(WINDOW* cmd_mode_win);
 };
 
 #endif //IO_HANDLER
