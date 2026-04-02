@@ -1,15 +1,50 @@
 #include "iohandler.h"
-#include "cmdtype.h"
-#include "cmdstatus.h"
+#include "inputtype.h"
+#include "inputevent.h"
 #include <ncurses.h>
-#include <string>
-#include <sstream>
 
 #define CTRL(k) ((k) & 0x1f)
 
-char IOHandler::get_input(){
+InputEvent IOHandler::get_input() {
 
-	char input = getch();
+	int ch = getch();
+	InputEvent input;
+	input.input_ch = ch;
+
+	switch (ch) {
+	case CTRL('c'):
+			input.type = InputType::ctrl;
+		break;
+
+	case KEY_ENTER:
+			input.type = InputType::enter;
+		break;
+	
+	case KEY_BACKSPACE:
+			input.type = InputType::backspace;
+		break;
+
+	case KEY_UP:
+			input.type = InputType::arrow_right;
+		break;
+		
+	case KEY_DOWN:
+			input.type = InputType::arrow_right;
+		break;
+
+	case KEY_LEFT:
+			input.type = InputType::arrow_right;
+		break;
+
+	case KEY_RIGHT:
+			input.type = InputType::arrow_right;
+		break;
+	
+	default:
+			input.type = InputType::character;
+		break;
+	}
+
 	return input;
 }
 

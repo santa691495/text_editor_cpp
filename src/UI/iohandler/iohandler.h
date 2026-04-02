@@ -1,8 +1,5 @@
 #include <ncurses.h>
-#include <string>
-#include <vector>
-#include "cmdstatus.h"
-#include "cmdtype.h"
+#include "inputevent.h"
 
 /*
 	
@@ -29,7 +26,7 @@ class IOHandler {
 	public:	
 
 		IOHandler();
-		char get_input();
+		InputEvent get_input();
 };
 
 #endif //IO_HANDLER
