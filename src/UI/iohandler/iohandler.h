@@ -18,22 +18,18 @@ IOHandler
 
 #ifndef IO_HANDLER
 #define IO_HANDLER
+//TODO:
+// IOHandler must be stateless and only handle input.
+//it must not store state.
+// editor state could be stored elsewhere
+// parsing must be handled by display
+//needs to return what type of input (make input event struct with enum class Type)
 
 class IOHandler {
-	private:
-		std::string buffer_str;
-		std::string cmd_str;
-		bool cmd_mode = false;
-
 	public:	
 
 		IOHandler();
-		void handle_input();
-		std::string get_cmd_str();
-		std::string get_buffer_str();
-		
-		std::string parse_cmd_status(CmdStatusObject cmd_status);	
-		bool is_cmd_mode();		
+		char get_input();
 };
 
 #endif //IO_HANDLER
