@@ -68,49 +68,60 @@ TEST(GapBuffer, MovementRight){
 	ASSERT_EQ(test_buffer.get_text(), expected_text);
 }
 
-TEST(GapBuffer, MoveCursorRight){
+TEST(GapBuffer, Grow){
 	GapBuffer test_buffer;
-	std::string default_text = "qwertyuiop";
-	std::string inserted_text = "abc";
-	std::string expected_text = "qwertyabcuiop";
-
-	for(auto ch : default_text){
-		test_buffer.insert(ch);
-	}
+	size_t expected_size = test_buffer.get_current_size() * 2;
 	
-	size_t insertion_index = 6;
-	test_buffer.move_cursor(insertion_index);
+	test_buffer.grow();
+	ASSERT_EQ(expected_size, test_buffer.get_current_size());
 
-	for(auto ch : inserted_text){
-		test_buffer.insert(ch);
-	}
-
-	ASSERT_EQ(test_buffer.get_text(), expected_text);
 }
 
-TEST(GapBuffer, MoveCursorLeft){
+TEST(GapBuffer, Backspace){
 	GapBuffer test_buffer;
-	std::string default_text = "qwertyuiop";
-	std::string inserted_text = "abc";
-	std::string expected_text = "qabcwertyuiop";
-
-	for(auto ch : default_text){
-		test_buffer.insert(ch);
-	}
-	
-	size_t init_index = 6;
-	size_t insertion_index = 1;
-	test_buffer.move_cursor(init_index);
-	test_buffer.move_cursor(insertion_index);
-	
-	for(auto ch : inserted_text){
+	std::string buffer_str = "qwerty";
+	std::string expected_string = "qwert";
+		
+	for(char& ch : buffer_str){
 		test_buffer.insert(ch);
 	}
 
-	ASSERT_EQ(test_buffer.get_text(), expected_text);
+	test_buffer.backspace();		
+	ASSERT_EQ(test_buffer.get_text(), expected_string);
 }	
 
-//TODO: add grow)() test ! URGENT !
+TEST(GapBuffer, BackspaceEmpty){
+	GapBuffer test_buffer;
+	std::string expected_string = "";
+		
+	test_buffer.backspace();		
+	ASSERT_EQ(test_buffer.get_text(), expected_string);
+}
+
+TEST(GapBuffer, IsGrowablePositive){
+	GapBuffer test_buffer;	
+	size_t max_size =  test_buffer.get_current_size();
+
+	for(size_t i = 0; i < max_size; ++i){
+		test_buffer.insert('a');
+	}	
+
+	ASSERT_TRUE(test_buffer.is_growable());
+}	
+
+TEST(GapBuffer, IsGrowableNegative){
+	GapBuffer test_buffer;	
+	size_t max_size =  test_buffer.get_current_size();
+
+	for(size_t i = 1; i < max_size; ++i){
+		test_buffer.insert('a');
+	}	
+
+	ASSERT_FALSE(test_buffer.is_growable());
+}	
+
+
+
 
 
 
