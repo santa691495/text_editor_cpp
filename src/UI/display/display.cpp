@@ -71,11 +71,28 @@ std::string Display::format_cmd_status(CmdStatusObject& cmd_status){
 
 }
 
+void Display::save_cursor_pos(){
+	int current_x, current_y;	
+	getyx(stdscr, current_y, current_x);
+
+	curs_current_y = current_y;
+	curs_current_x = current_x;
+}
+
+void Display::fix_cursor_pos(){
+	move(curs_current_y, curs_current_x);
+}
+
 void Display::render_buffer(std::string& buffer_text){
 	clear();
+
+	save_cursor_pos();
 	
 	const char* c_text = buffer_text.c_str();
 	printw("%s", c_text);
+
+	fix_cursor_pos();
+	
 	refresh();
 }
 

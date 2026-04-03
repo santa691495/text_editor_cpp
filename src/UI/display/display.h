@@ -19,12 +19,16 @@
 #ifndef DISPLAY
 #define DISPLAY
 
-//TODO: handle arrow left and arrow right
+//TODO: maintain the cursor position after buffer printing
+// so it matches with the gap buffer 
 class Display {
 	private:
 
 		WINDOW* cmd_status_win;
 		WINDOW* cmd_mode_win;
+
+		int curs_current_y;
+		int curs_current_x;
 
 	public:
 
@@ -44,6 +48,8 @@ class Display {
 		
 	private:
 
+		void save_cursor_pos();
+		void fix_cursor_pos();
 		std::string format_cmd_status(CmdStatusObject& cmd_status);
 };
 
