@@ -5,6 +5,7 @@ target_link_libraries(modify_buffer_test
 	display
 	iohandler
 	gapbuffer
+	${CURSES_LIBRARIES} tinfo
 )
 
 include(GoogleTest)
