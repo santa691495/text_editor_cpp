@@ -76,6 +76,7 @@ TEST(ModifyBuffer, MoveLeftAndInsert){
 		if(input.type == InputType::character){
 			gap_buffer.insert(input.input_ch);
 		} else if(input.type == InputType::arrow_left){
+			display_handler.move_cursor_left();
 			gap_buffer.move_left();
 		}
 	}
@@ -116,7 +117,9 @@ TEST(ModifyBuffer, MoveRightAndInsert){
 
 	size_t input_loops = 2;
 
-	gap_buffer.move_left(); //to make cursor start at last char in buffer_str
+	//to make cursor start at last char in buffer_str
+	display_handler.move_cursor_left();
+	gap_buffer.move_left(); 
 	
 	for(size_t i = 0; i < input_loops; ++i){
 		InputEvent input = io_handler.get_input();
@@ -124,6 +127,7 @@ TEST(ModifyBuffer, MoveRightAndInsert){
 		if(input.type == InputType::character){
 			gap_buffer.insert(input.input_ch);
 		} else if(input.type == InputType::arrow_right){
+			display_handler.move_cursor_right();
 			gap_buffer.move_right();
 		}
 	}
