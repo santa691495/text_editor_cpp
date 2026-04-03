@@ -19,7 +19,7 @@
 #ifndef DISPLAY
 #define DISPLAY
 
-
+//TODO: handle arrow left and arrow right
 class Display {
 	private:
 
@@ -33,6 +33,8 @@ class Display {
 		void render_buffer(std::string& buffer_text);
 		void render_cmd_mode();
 		void render_cmd_status(CmdStatusObject& cmd_status);
+		void move_cursor_left();
+		void move_cursor_right();
 
 		~Display();
 		

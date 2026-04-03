@@ -100,4 +100,23 @@ Display::~Display(){
 	delwin(cmd_status_win);
 }
 
+void Display::move_cursor_left(){
+	int curs_y, curs_x;
+
+	getyx(stdscr, curs_y, curs_x);
+
+	move(curs_y, curs_x-1);
+	refresh();
+}
+
+void Display::move_cursor_right(){
+	int curs_y, curs_x;
+
+	getyx(stdscr, curs_y, curs_x);
+
+	move(curs_y, curs_x+1);
+	refresh();
+}
+
+
 
