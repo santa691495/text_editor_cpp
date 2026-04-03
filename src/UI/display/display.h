@@ -36,11 +36,14 @@ class Display {
 		void move_cursor_left();
 		void move_cursor_right();
 
+		WINDOW* get_cmd_mode_win();
+		WINDOW* get_cmd_status_win();
+
+
 		~Display();
 		
 	private:
 
-		WINDOW* get_cmd_mode_win();
 		std::string format_cmd_status(CmdStatusObject& cmd_status);
 };
 

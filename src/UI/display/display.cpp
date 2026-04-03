@@ -31,6 +31,12 @@ WINDOW* Display::get_cmd_mode_win(){
 	return win;
 }
 
+WINDOW* Display::get_cmd_status_win(){
+	WINDOW* win = cmd_status_win;
+	return win;
+
+}
+
 std::string Display::format_cmd_status(CmdStatusObject& cmd_status){
 
 	std::string cmd_str;
