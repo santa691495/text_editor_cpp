@@ -38,6 +38,7 @@ class Display {
 		
 	private:
 
+		WINDOW* get_cmd_mode_win();
 		std::string format_cmd_status(CmdStatusObject& cmd_status);
 };
 

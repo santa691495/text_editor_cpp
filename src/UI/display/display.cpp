@@ -26,6 +26,11 @@ Display::Display(){
 	cmd_mode_win = newwin(win_height, win_width, start_y, start_x);
 }
 
+WINDOW* Display::get_cmd_mode_win(){
+	WINDOW* win = cmd_mode_win;
+	return win;
+}
+
 std::string Display::format_cmd_status(CmdStatusObject& cmd_status){
 
 	std::string cmd_str;
