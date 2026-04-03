@@ -1,51 +1,9 @@
 #include "display.h"
+#include "cmdstatus.h"
 #include <ncurses.h>
 #include <string>
 
-// printw the current buffer
-
-void Display::render_buffer(std::string& buffer_text){
-	
-	const char* c_text = buffer_text.c_str();
-	printw("%s", c_text);
-	refresh();
-}
-
-void Display::render_cmd_mode(bool& is_cmd_mode){
-	
-	if(!is_cmd_mode){
-		return;
-	}	
-	
-	int scr_height, scr_width;
-
-	getmaxyx(stdscr, scr_height, scr_width);
-		
-	int win_height = 3;
-	int win_width = scr_width - 3;
-	
-	int start_y = scr_height - 3;
-	int start_x = 0;
-	
-	WINDOW* cmd_win = newwin(win_height, win_width, start_y, start_x);
-
-	box(cmd_win, 0, 0);
-
-	wmove(cmd_win, 1 , 1);
-	
-	wrefresh(cmd_win);	
-	
-	if(!is_cmd_mode){
-		wclear(cmd_win);
-		delwin(cmd_win);
-	}
-}
-
-void Display::render_cmd_status(std::string& status_text, bool& cmd_mode){
-		
-	if(cmd_mode){
-		return;
-	}
+Display::Display(){
 
 	int scr_height, scr_width;
 
@@ -55,22 +13,91 @@ void Display::render_cmd_status(std::string& status_text, bool& cmd_mode){
 	int win_width = scr_width/4;
 	
 	int start_y = scr_height - 3;
-	int start_x = scr_width / 4;
+	int start_x = scr_width / 2 - (win_width / 2); //start at half, then move left by half the new win width
+
+	cmd_status_win = newwin(win_height, win_width, start_y, start_x);
+		
+	win_height = 3;
+	win_width = scr_width - 3;
 	
-	WINDOW* status_win = newwin(win_height, win_width, start_y, start_x);
+	start_y = scr_height - 3;
+	start_x = 0;
+
+	cmd_mode_win = newwin(win_height, win_width, start_y, start_x);
+}
+
+WINDOW* Display::get_cmd_mode_win(){
+	WINDOW* win = cmd_mode_win;
+	return win;
+}
+
+std::string Display::format_cmd_status(CmdStatusObject& cmd_status){
+
+	std::string cmd_str;
+
+	if(cmd_status.success){
+		cmd_str += "success : ";
+	} else {
+		cmd_str += "failed : ";
+	}
+
+	switch (cmd_status.cmd_type)
+	{
+	case CmdType::write:
+			cmd_str += "write ";
+		break;
+
+	case CmdType::read:
+			cmd_str += "read ";
+		break;
+
+	case CmdType::quit:
+			cmd_str += "quit ";
+		break;
+	
+	case CmdType::null:
+			cmd_str += "null ";
+		break;
+	
+	}
+
+	return cmd_str;
+
+}
+
+void Display::render_buffer(std::string& buffer_text){
+	clear();
+	
+	const char* c_text = buffer_text.c_str();
+	printw("%s", c_text);
+	refresh();
+}
+
+void Display::render_cmd_mode(){
+
+	box(cmd_mode_win, 0, 0);
+	wmove(cmd_mode_win, 1 , 1);
+	wrefresh(cmd_mode_win);	
+	
+}
+
+void Display::render_cmd_status(CmdStatusObject& cmd_status){
+
+	std::string status_text = format_cmd_status(cmd_status);
 	
 	const char* c_text = status_text.c_str();	
 
-	wattron(status_win, A_STANDOUT);
-	wprintw(status_win,"%s", c_text);
-	wattroff(status_win, A_STANDOUT);
+	wattron(cmd_status_win, A_STANDOUT);
+	wprintw(cmd_status_win,"%s", c_text);
+	wattroff(cmd_status_win, A_STANDOUT);
 
-	wrefresh(status_win);
+	wrefresh(cmd_status_win);
 
-	//TODO: replace this with a timer 
-	if(cmd_mode){
-		wclear(status_win);
-		delwin(status_win);
-	}
 }
+
+Display::~Display(){
+	delwin(cmd_mode_win);
+	delwin(cmd_status_win);
+}
+
 

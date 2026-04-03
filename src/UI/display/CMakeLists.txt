@@ -14,5 +14,7 @@ target_sources(display
 )	
 
 target_link_libraries( display
+	cmdtype
+	cmdstatus
 	${CURSES_LIBRARIES}
 )
