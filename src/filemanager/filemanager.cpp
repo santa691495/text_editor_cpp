@@ -50,7 +50,7 @@ std::filesystem::path FileManager::resolve_target_path(std::filesystem::path fil
 	
 	return std::filesystem::weakly_canonical(combined);
 }
-//resolves AND checks if file exists
+
 bool FileManager::file_exists(std::filesystem::path filepath){
 	auto resolved_path = resolve_target_path(filepath);
 

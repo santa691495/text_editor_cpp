@@ -21,7 +21,7 @@ class FileManager {
 		std::filesystem::path current_file = "";
 
 	public:
-		FileManager(std::filesystem::path current_file);
+		FileManager(std::filesystem::path current_file = "");
 
 		void set_current_file(std::filesystem::path filepath);
 		std::filesystem::path get_current_file();
