@@ -34,6 +34,7 @@ class Display {
 		void render_cmd_mode();
 		void render_cmd_status(CmdStatusObject& cmd_status);
 		WINDOW* get_cmd_mode_win();
+		WINDOW* get_cmd_status_win();
 
 		~Display();
 		
