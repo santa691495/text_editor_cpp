@@ -5,7 +5,7 @@ target_link_libraries(iohandler_tests
 	iohandler
 	cmdtype
 	cmdstatus
-	${CURSES_LIBRARIES}
+	${CURSES_LIBRARIES} tinfo
 )
 
 include(GoogleTest)
