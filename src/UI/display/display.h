@@ -33,12 +33,12 @@ class Display {
 		void render_buffer(std::string& buffer_text);
 		void render_cmd_mode();
 		void render_cmd_status(CmdStatusObject& cmd_status);
+		WINDOW* get_cmd_mode_win();
 
 		~Display();
 		
 	private:
 
-		WINDOW* get_cmd_mode_win();
 		std::string format_cmd_status(CmdStatusObject& cmd_status);
 };
 
