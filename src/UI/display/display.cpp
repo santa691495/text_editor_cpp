@@ -13,28 +13,9 @@ Display::Display(){
 	int win_width = scr_width/4;
 	
 	int start_y = scr_height - 3;
-	int start_x = scr_width / 2 - (win_width / 2); //start at half, then move left by half the new win width
+	int start_x = scr_width / 2 - (win_width / 2);
 
 	cmd_status_win = newwin(win_height, win_width, start_y, start_x);
-		
-	win_height = 3;
-	win_width = scr_width - 3;
-	
-	start_y = scr_height - 3;
-	start_x = 0;
-
-	cmd_mode_win = newwin(win_height, win_width, start_y, start_x);
-}
-
-WINDOW* Display::get_cmd_mode_win(){
-	WINDOW* win = cmd_mode_win;
-	return win;
-}
-
-WINDOW* Display::get_cmd_status_win(){
-	WINDOW* win = cmd_status_win;
-	return win;
-
 }
 
 std::string Display::format_cmd_status(CmdStatusObject& cmd_status){
@@ -71,40 +52,18 @@ std::string Display::format_cmd_status(CmdStatusObject& cmd_status){
 
 }
 
-void Display::save_cursor_pos(){
-	int current_x, current_y;	
-	getyx(stdscr, current_y, current_x);
-
-	curs_current_y = current_y;
-	curs_current_x = current_x;
-}
-
-void Display::fix_cursor_pos(){
-	move(curs_current_y, curs_current_x);
-}
-
 void Display::render_buffer(std::string& buffer_text){
 	clear();
 
-	save_cursor_pos();
-	
 	const char* c_text = buffer_text.c_str();
 	printw("%s", c_text);
 
-	fix_cursor_pos();
-	
 	refresh();
 }
 
-void Display::render_cmd_mode(){
-
-	box(cmd_mode_win, 0, 0);
-	wmove(cmd_mode_win, 1 , 1);
-	wrefresh(cmd_mode_win);	
-	
-}
-
 void Display::render_cmd_status(CmdStatusObject& cmd_status){
+	
+	wclear(cmd_status_win);
 
 	std::string status_text = format_cmd_status(cmd_status);
 	
@@ -119,7 +78,6 @@ void Display::render_cmd_status(CmdStatusObject& cmd_status){
 }
 
 Display::~Display(){
-	delwin(cmd_mode_win);
 	delwin(cmd_status_win);
 }
 
