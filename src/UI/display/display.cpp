@@ -18,6 +18,18 @@ Display::Display(){
 	cmd_status_win = newwin(win_height, win_width, start_y, start_x);
 }
 
+void Display::render_cmd_mode(){
+	
+	clear();
+
+	//calculate bottom
+	int scr_height, scr_width;
+	getmaxyx(stdscr, scr_height, scr_width);
+
+	move(scr_height/2, scr_width/2);
+	refresh();
+}
+
 std::string Display::format_cmd_status(CmdStatusObject& cmd_status){
 
 	std::string cmd_str;

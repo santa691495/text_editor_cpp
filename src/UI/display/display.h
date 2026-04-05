@@ -40,6 +40,7 @@ class Display {
 
 		void render_buffer(std::string& buffer_text);
 		void render_cmd_status(CmdStatusObject& cmd_status);
+		void render_cmd_mode();
 		void move_cursor_left();
 		void move_cursor_right();
 
