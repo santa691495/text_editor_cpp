@@ -1,4 +1,4 @@
-add_executable(display_tests unittest.cpp)
+add_executable(display_tests unittest.cpp manual.cpp)
 
 target_link_libraries(display_tests
 	display
