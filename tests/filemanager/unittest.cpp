@@ -3,6 +3,7 @@
 #include "filemanager.h"
 #include <string>
 #include <filesystem>
+#include <fstream>
 
 TEST(FileManager, ResolvePathLower){
 	std::filesystem::path current_file = "/home/dingdong/softwareprojects/text_editor_practice/tests/filemanager/dummy_root.txt";

@@ -1,7 +1,4 @@
-#include <vector>
-#include <string>
 #include <filesystem>
-#include <fstream>
 #include "gapbuffer.h"
 
 #ifndef FILE_MANAGER
@@ -21,7 +18,7 @@ class FileManager {
 		std::filesystem::path current_file = "";
 
 	public:
-		FileManager(std::filesystem::path current_file = "");
+		FileManager(std::filesystem::path filepath);
 
 		void set_current_file(std::filesystem::path filepath);
 		std::filesystem::path get_current_file();

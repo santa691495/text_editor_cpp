@@ -1,4 +1,3 @@
-#include <vector>
 #include <string>
 #include <filesystem>
 #include <fstream>
@@ -6,22 +5,14 @@
 #include "gapbuffer.h"
 #include "filemanager.h"
 
-FileManager::FileManager(std::filesystem::path current_file){
- 	auto target_file = resolve_target_path(current_file);
-	
-	if(!std::filesystem::exists(target_file)){
-		return;
-	}	
-
-	if(!std::filesystem::is_regular_file(target_file)){
-		return;
-	}
-
+FileManager::FileManager(std::filesystem::path filepath){
+ 	auto target_file = resolve_target_path(filepath);
 	this->current_file = target_file;
+
 }
 
 void FileManager::set_current_file(std::filesystem::path filepath){
- 	auto target_file = resolve_target_path(current_file);
+ 	auto target_file = resolve_target_path(filepath);
 	
 	if(!std::filesystem::exists(target_file)){
 		return;
@@ -48,19 +39,23 @@ std::filesystem::path FileManager::resolve_target_path(std::filesystem::path fil
 	std::filesystem::path combined = 
 	filepath.is_absolute() ? filepath : base / filepath;
 	
-	return std::filesystem::weakly_canonical(combined);
+	try {
+		return std::filesystem::weakly_canonical(combined);
+	} catch (...) {
+		return combined;
+	}
 }
 
 bool FileManager::file_exists(std::filesystem::path filepath){
 	auto resolved_path = resolve_target_path(filepath);
 
-	return std::filesystem::exists(resolved_path);
+	return std::filesystem::exists(resolved_path) && std::filesystem::is_regular_file(resolved_path);
 }
 
 bool FileManager::write_file(std::filesystem::path filepath, GapBuffer& gapbuffer){
 	filepath = resolve_target_path(filepath);
 	
-	std::ofstream outfile(filepath);
+	std::ofstream outfile(filepath, std::ios::trunc);
 	
 	if(!outfile){
 		std::cerr << "Could not open file\n";
@@ -77,19 +72,18 @@ bool FileManager::read_file(std::filesystem::path filepath, GapBuffer& gapbuffer
 	std::ifstream infile(filepath);
 	
 	if(!infile){
-		std::cerr << "Could not open file\n";
+		std::cerr << "Could not open file: " << filepath << "\n";
 		return false;
 	}
 		
-	gapbuffer.clear();
 	std::string input_line;
-	
-	while(std::getline(infile, input_line, '\0')){
-		for(auto& ch : input_line){
-			gapbuffer.insert(ch);
-		}
-	}
+	std::getline(infile, input_line, '\0');
 
+	gapbuffer.clear();
+	for(auto& ch : input_line){
+		gapbuffer.insert(ch);
+	}
+	
 	infile.close();
 	return true;
 }
