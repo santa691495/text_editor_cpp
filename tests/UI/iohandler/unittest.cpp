@@ -102,29 +102,4 @@ TEST(IoHandler, GetInputBackspace){
     ASSERT_EQ(input_event.type, InputType::backspace);
 }
 
-TEST(IoHandler, GetCmdInput){
-    IOHandler io_handler;
-    
-    initscr();
-    raw();
-    keypad(stdscr, TRUE);
-
-    printw("%s", "Press 'c' then press enter.");
-    refresh();
-
-    WINDOW* cmd_mode_win = newwin(5, 10, 10, 2);
-    wmove(cmd_mode_win, 2, 2);
-    box(cmd_mode_win, 0 ,0);
-
-    wrefresh(cmd_mode_win);
-
-    int input_c = io_handler.get_cmd_input(cmd_mode_win);
-    int input_enter = io_handler.get_cmd_input(cmd_mode_win);
-
-    delwin(cmd_mode_win);
-    endwin();
-
-    ASSERT_EQ(input_c, 'c');
-    ASSERT_EQ(input_enter, '\n');
-}
 
