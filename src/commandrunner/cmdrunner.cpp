@@ -43,7 +43,13 @@ CommandRunner::CommandRunner(FileManager& fm, GapBuffer& gb, bool& run):
 	};
 
 	handlers["o"] = [this](CommandObject& cmd)-> CmdStatusObject {
-		bool is_read = filemanager.read_file(cmd.args[0], gapbuffer);
+
+		bool is_read;
+		if(cmd.args.empty()){
+			is_read = filemanager.read_file(filemanager.get_current_file(), gapbuffer);
+		} else {
+			is_read = filemanager.read_file(cmd.args[0], gapbuffer);
+		}
 		
 		CmdStatusObject read_status(CmdType::read, is_read);
 		return read_status;
@@ -53,10 +59,10 @@ CommandRunner::CommandRunner(FileManager& fm, GapBuffer& gb, bool& run):
 		bool quit_success;
 		if(!running){	
 			quit_success = false;
-		}	
-
-		running = true;
-		quit_success = true;
+		}	else {
+			running = false;
+			quit_success = true;
+		}
 
 		CmdStatusObject quit_status(CmdType::quit, quit_success);
 		return quit_status;
