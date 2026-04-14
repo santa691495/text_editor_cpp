@@ -1,9 +1,6 @@
 #include <string>
 #include <functional>
 #include <unordered_map>
-#include <iterator>
-#include <algorithm>
-#include <utility>
 #include "cmd_obj.h"
 #include "gapbuffer.h"
 #include "filemanager.h"
@@ -34,7 +31,7 @@ CommandRunner::CommandRunner(FileManager& fm, GapBuffer& gb, bool& run):
 {
 	handlers["w"] = [this](CommandObject& cmd) -> CmdStatusObject{	
 		if(cmd.args.empty()){
-			cmd.args[0] = filemanager.get_current_file();
+			cmd.args.push_back(filemanager.get_current_file().string());
 		}
 		bool is_written = filemanager.write_file(cmd.args[0], gapbuffer);
 
@@ -56,13 +53,8 @@ CommandRunner::CommandRunner(FileManager& fm, GapBuffer& gb, bool& run):
 	};		
 
 	handlers["q"] = [this](CommandObject& cmd) -> CmdStatusObject{
-		bool quit_success;
-		if(!running){	
-			quit_success = false;
-		}	else {
-			running = false;
-			quit_success = true;
-		}
+		bool quit_success = running;
+		running = false;
 
 		CmdStatusObject quit_status(CmdType::quit, quit_success);
 		return quit_status;
