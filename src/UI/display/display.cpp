@@ -70,6 +70,7 @@ void Display::save_cursor_pos(){
 
 void Display::fix_cursor_pos(){
 	move(curs_saved_y, curs_saved_x);
+	refresh();
 }
 
 void Display::render_buffer(std::string& buffer_text){
