@@ -1,2 +1,3 @@
 add_subdirectory(modify_buffer)
 add_subdirectory(open_file)
+add_subdirectory(quit)
