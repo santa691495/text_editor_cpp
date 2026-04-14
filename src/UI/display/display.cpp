@@ -64,11 +64,23 @@ std::string Display::format_cmd_status(CmdStatusObject& cmd_status){
 
 }
 
+void Display::save_cursor_pos(){
+	getyx(stdscr, curs_saved_y, curs_saved_x);
+}
+
+void Display::fix_cursor_pos(){
+	move(curs_saved_y, curs_saved_x);
+}
+
 void Display::render_buffer(std::string& buffer_text){
 	clear();
 
+	save_cursor_pos();
+
 	const char* c_text = buffer_text.c_str();
 	printw("%s", c_text);
+
+	fix_cursor_pos();
 
 	refresh();
 }
