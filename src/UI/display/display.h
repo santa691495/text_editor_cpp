@@ -31,8 +31,8 @@ class Display {
 
 		WINDOW* cmd_status_win;
 
-		int curs_current_y;
-		int curs_current_x;
+		int curs_saved_y;
+		int curs_saved_x;
 
 	public:
 
@@ -48,6 +48,8 @@ class Display {
 		
 	private:
 
+		void save_cursor_pos();
+		void fix_cursor_pos();
 		std::string format_cmd_status(CmdStatusObject& cmd_status);
 };
 
