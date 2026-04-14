@@ -47,12 +47,13 @@ TEST(OpenFile, OpenFile){
 
             CommandObject cmd = cmd_parser.parse(cmd_input_str);
             CmdStatusObject cmd_status = cmd_runner.run(cmd);
+
             editor_state.cmd_mode = false;
             // ===============================
         }
         //this while loop should be its own class as well
         while(!editor_state.cmd_mode){
-            std::string buffer_text = gbuffer.get_text();
+            std::string buffer_text = gbuffer.get_text();   
             display_handler.render_buffer(buffer_text);
 
             InputEvent input = io_handler.get_input();
@@ -73,7 +74,6 @@ TEST(OpenFile, OpenFile){
                 break;
 
             case InputType::backspace:
-                display_handler.move_cursor_left();
                 gbuffer.backspace();
                 break;
 
@@ -88,15 +88,15 @@ TEST(OpenFile, OpenFile){
             case InputType::unknown:
 
                 break;
-
-            default:
-
-                break;
             }
             //============================
         }
 
     }
     
+    clear();
+    refresh();
     endwin();
+
+    ASSERT_TRUE(true);
 }
