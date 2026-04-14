@@ -37,6 +37,10 @@ class GapBuffer {
 		size_t get_current_size(); //todo
 		void backspace();
 		void clear();	
+
+	private:
+		void move_right_newline();
+		void move_left_newline();
 };
 
 #endif //GAP_BUFFER

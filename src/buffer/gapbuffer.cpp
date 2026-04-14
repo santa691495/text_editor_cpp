@@ -116,3 +116,50 @@ void GapBuffer::clear(){
 	gap_end = buffer.data()+buffer.size();
 }
 
+void GapBuffer::move_right_newline(){
+	
+	if(gap_end == buffer.data() +  buffer.size()){
+		return;
+	}
+
+	char* finder = gap_end;
+	for(finder; finder != buffer.data()+buffer.size(); ++finder){
+		if(*finder == '\n'){
+			break;
+		}
+	} 
+
+	if(finder == buffer.data() + buffer.size()){
+		return;
+	}
+
+	while(gap_start != finder+1){
+		move_right();
+	}
+
+
+}
+
+void GapBuffer::move_left_newline(){
+
+	if(gap_start == buffer.data()){
+		return;
+	}
+
+	char* finder = gap_start;
+	for(finder; finder > buffer.data(); ++finder){
+		if(*finder == '\n'){
+			return;
+		}
+	}
+
+	if(finder == buffer.data() && *finder != '\n'){
+		return;
+	}
+
+	while(gap_start != finder+1){
+		move_left();
+	}
+
+
+}
