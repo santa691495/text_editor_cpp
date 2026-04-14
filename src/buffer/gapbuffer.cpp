@@ -142,19 +142,25 @@ bool GapBuffer::move_left_line(){
 		return false;
 	}
 
-	char* finder = gap_start;
-	for(finder; finder > buffer.data(); --finder){
-		if(*finder == '\n'){
+	if(*(gap_start-1) == '\n'){
+		move_left();
+	}
+
+	char* finder = gap_start-1;
+	for(finder; *finder != '\n'; --finder){
+		if(finder == buffer.data()){
 			break;
 		}
 	}
 
 	if(finder == buffer.data()){
-		return false;
-	}
-
-	while(gap_start != finder+1){
-		move_left();
+		while(gap_start != buffer.data()){
+			move_left();
+		}	
+	} else {
+		while(gap_start != finder+1){
+			move_left();
+		}
 	}
 
 	return true;
@@ -172,12 +178,8 @@ void GapBuffer::move_right_loop(size_t steps){
 
 void GapBuffer::move_up(size_t columns){
 
-	bool line_has_newline = move_left_line();
-	bool prev_has_newline = move_left_line();
-
-	if(!line_has_newline && !prev_has_newline){
-		return;
-	}
+	move_left_line();
+	move_left_line();
 
 	move_right_loop(columns);
 }

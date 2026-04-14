@@ -125,7 +125,7 @@ TEST(GapBuffer, MoveUp){
 	size_t max_size =  test_buffer.get_current_size();
 
 	std::string buffer_str = "aaaa\naaaaa";
-	std::string expected_str = "aaaa\nBaaaaa";
+	std::string expected_str = "Baaaa\naaaaa";
 
 	for(char& ch : buffer_str){
 		test_buffer.insert(ch);
@@ -163,7 +163,7 @@ TEST(GapBuffer, MoveUpWithSteps){
 	size_t max_size =  test_buffer.get_current_size();
 
 	std::string buffer_str = "aaaa\naaaaa";
-	std::string expected_str = "aaaa\naaBaaa";
+	std::string expected_str = "aaBaa\naaaaa";
 
 	for(char& ch : buffer_str){
 		test_buffer.insert(ch);
