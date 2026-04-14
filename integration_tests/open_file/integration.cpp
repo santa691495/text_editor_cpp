@@ -12,6 +12,7 @@
 #include <filesystem>
 #include <fstream>
 
+//TODO: Test with Display::save_cursor_pos() and Display::fix_cursor_pos()
 TEST(OpenFile, OpenFile){
     initscr();
     raw();
@@ -55,26 +56,33 @@ TEST(OpenFile, OpenFile){
         while(!editor_state.cmd_mode){
             std::string buffer_text = gbuffer.get_text();   
             display_handler.render_buffer(buffer_text);
+            display_handler.fix_cursor_pos();
 
             InputEvent input = io_handler.get_input();
             //This should be its own function ===
             switch (input.type) {
             case InputType::arrow_left:
                 display_handler.move_cursor_left();
+                display_handler.save_cursor_pos();
+                editor_state.cursor_left_next_refresh = true;
                 gbuffer.move_left();
                 break;
 
             case InputType::arrow_right:
                 display_handler.move_cursor_right();
+                display_handler.save_cursor_pos();
+                editor_state.cursor_right_next_refresh = true;
                 gbuffer.move_right();
                 break;
 
             case InputType::character:
                 gbuffer.insert(input.input_ch);
+                display_handler.save_cursor_pos();
                 break;
 
             case InputType::backspace:
                 gbuffer.backspace();
+                display_handler.save_cursor_pos();
                 break;
 
             case InputType::ctrl:
