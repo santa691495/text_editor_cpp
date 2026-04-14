@@ -43,13 +43,13 @@ class Display {
 		void render_cmd_mode();
 		void move_cursor_left();
 		void move_cursor_right();
+		void save_cursor_pos();
+		void fix_cursor_pos();
 
 		~Display();
 		
 	private:
 
-		void save_cursor_pos();
-		void fix_cursor_pos();
 		std::string format_cmd_status(CmdStatusObject& cmd_status);
 };
 

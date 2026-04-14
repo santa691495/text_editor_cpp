@@ -75,12 +75,8 @@ void Display::fix_cursor_pos(){
 void Display::render_buffer(std::string& buffer_text){
 	clear();
 
-	save_cursor_pos();
-
 	const char* c_text = buffer_text.c_str();
 	printw("%s", c_text);
-
-	fix_cursor_pos();
 
 	refresh();
 }
