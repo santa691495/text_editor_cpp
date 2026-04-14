@@ -116,50 +116,78 @@ void GapBuffer::clear(){
 	gap_end = buffer.data()+buffer.size();
 }
 
-void GapBuffer::move_right_newline(){
-	
+bool GapBuffer::move_right_line(){
+
 	if(gap_end == buffer.data() +  buffer.size()){
-		return;
+		return false;
 	}
 
 	char* finder = gap_end;
-	for(finder; finder != buffer.data()+buffer.size(); ++finder){
-		if(*finder == '\n'){
-			break;
+	for(finder; *finder != '\n'; ++finder){
+		if(finder == buffer.data() + buffer.size()){
+			return false;
 		}
 	} 
 
-	if(finder == buffer.data() + buffer.size()){
-		return;
-	}
-
-	while(gap_start != finder+1){
+	while(gap_end != finder+1){
 		move_right();
 	}
 
-
+	return true;
 }
 
-void GapBuffer::move_left_newline(){
+bool GapBuffer::move_left_line(){
 
 	if(gap_start == buffer.data()){
-		return;
+		return false;
 	}
 
 	char* finder = gap_start;
-	for(finder; finder > buffer.data(); ++finder){
+	for(finder; finder > buffer.data(); --finder){
 		if(*finder == '\n'){
-			return;
+			break;
 		}
 	}
 
-	if(finder == buffer.data() && *finder != '\n'){
-		return;
+	if(finder == buffer.data()){
+		return false;
 	}
 
 	while(gap_start != finder+1){
 		move_left();
 	}
 
+	return true;
+}
 
+void GapBuffer::move_right_loop(size_t steps){
+
+	char* buffer_end = buffer.data() + buffer.size();
+	
+	for(size_t i = 0; i < steps && gap_end != buffer_end; ++i){
+		move_right();
+	}
+
+}
+
+void GapBuffer::move_up(size_t columns){
+
+	bool line_has_newline = move_left_line();
+	bool prev_has_newline = move_left_line();
+
+	if(!line_has_newline && !prev_has_newline){
+		return;
+	}
+
+	move_right_loop(columns);
+}
+
+void GapBuffer::move_down(size_t columns){
+	bool next_has_newline = move_right_line();
+
+	if(!next_has_newline){
+		return;
+	}
+
+	move_right_loop(columns);
 }
