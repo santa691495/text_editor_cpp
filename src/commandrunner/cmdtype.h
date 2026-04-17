@@ -1,5 +1,3 @@
-#include <string>
-
 #ifndef CMD_TYPE
 #define CMD_TYPE
 /*

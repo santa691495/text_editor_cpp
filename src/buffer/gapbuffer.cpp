@@ -1,6 +1,5 @@
 #include <vector>
 #include <string>
-#include <algorithm>
 #include "gapbuffer.h"
 
 void GapBuffer::insert(char data){
@@ -123,7 +122,7 @@ bool GapBuffer::move_right_line(){
 	}
 
 	char* finder = gap_end;
-	for(finder; *finder != '\n'; ++finder){
+	for(; *finder != '\n'; ++finder){
 		if(finder == buffer.data() + buffer.size()){
 			return false;
 		}
@@ -147,7 +146,7 @@ bool GapBuffer::move_left_line(){
 	}
 
 	char* finder = gap_start-1;
-	for(finder; *finder != '\n'; --finder){
+	for(; *finder != '\n'; --finder){
 		if(finder == buffer.data()){
 			break;
 		}

@@ -2,8 +2,6 @@
 #include <vector>
 #include <functional>
 #include <unordered_map>
-#include <utility>
-#include "cmdtype.h"
 #include "cmdstatus.h"
 #include "cmd_obj.h"
 #include "gapbuffer.h"
