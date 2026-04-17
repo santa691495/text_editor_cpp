@@ -120,5 +120,53 @@ void Display::move_cursor_right(){
 	refresh();
 }
 
+bool Display::is_cursor_height_max(){
+	int current_y, current_x;
+	getyx(stdscr, current_y, current_x);
+
+	int max_y = getmaxy(stdscr);
+
+	if(current_y == max_y){
+		return true;
+	} 
+
+	return false;
+}
+
+bool Display::is_cursor_height_min(){
+	int current_y, current_x;
+	getyx(stdscr, current_y, current_x);
+
+	if(current_y == 0){
+		return true;
+	} 
+
+	return false;
+}
+
+void Display::move_cursor_startln_up(){
+	if(is_cursor_height_min()){
+		return;
+	}
+
+	int curs_y, curs_x;
+	getyx(stdscr, curs_y, curs_x);
+
+	move(curs_y-1, 0);
+}
+
+void Display::move_cursor_startln_down(){
+	if(is_cursor_height_max()){
+		return;
+	}
+
+	int curs_y, curs_x;
+	getyx(stdscr, curs_y, curs_x);
+
+	move(curs_y+1, 0);
+}
+
+
+
 
 

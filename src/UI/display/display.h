@@ -20,11 +20,11 @@
 #define DISPLAY
 
 
-//TODO: Rework display
-// - remove the separate window for command input (print on same window instead, on the bottom)
-// - remove the fix and save cursor positions
-// - render command mode should clear the screen and
-//	 only show the command input while on command mode !
+//TODO: make the cursor go up or down to the start of each line.
+//up should go to the start of line on up, then 
+// down should go to start of line on bottom
+// it should also check if the line is already at max or min height
+
 
 class Display {
 	private:
@@ -43,6 +43,8 @@ class Display {
 		void render_cmd_mode();
 		void move_cursor_left();
 		void move_cursor_right();
+		void move_cursor_startln_up();
+		void move_cursor_startln_down();
 		void save_cursor_pos();
 		void fix_cursor_pos();
 
@@ -50,6 +52,8 @@ class Display {
 		
 	private:
 
+		bool is_cursor_height_min();
+		bool is_cursor_height_max();
 		std::string format_cmd_status(CmdStatusObject& cmd_status);
 };
 
