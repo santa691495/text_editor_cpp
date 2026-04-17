@@ -1,6 +1,5 @@
 #include <vector>
 #include <string>
-#include <algorithm>
 #include "gapbuffer.h"
 
 void GapBuffer::insert(char data){
@@ -116,3 +115,80 @@ void GapBuffer::clear(){
 	gap_end = buffer.data()+buffer.size();
 }
 
+bool GapBuffer::move_right_line(){
+
+	if(gap_end == buffer.data() +  buffer.size()){
+		return false;
+	}
+
+	char* finder = gap_end;
+	for(; *finder != '\n'; ++finder){
+		if(finder == buffer.data() + buffer.size()){
+			return false;
+		}
+	} 
+
+	while(gap_end != finder+1){
+		move_right();
+	}
+
+	return true;
+}
+
+bool GapBuffer::move_left_line(){
+
+	if(gap_start == buffer.data()){
+		return false;
+	}
+
+	if(*(gap_start-1) == '\n'){
+		move_left();
+	}
+
+	char* finder = gap_start-1;
+	for(; *finder != '\n'; --finder){
+		if(finder == buffer.data()){
+			break;
+		}
+	}
+
+	if(finder == buffer.data()){
+		while(gap_start != buffer.data()){
+			move_left();
+		}	
+	} else {
+		while(gap_start != finder+1){
+			move_left();
+		}
+	}
+
+	return true;
+}
+
+void GapBuffer::move_right_loop(size_t steps){
+
+	char* buffer_end = buffer.data() + buffer.size();
+	
+	for(size_t i = 0; i < steps && gap_end != buffer_end; ++i){
+		move_right();
+	}
+
+}
+
+void GapBuffer::move_up(size_t columns){
+
+	move_left_line();
+	move_left_line();
+
+	move_right_loop(columns);
+}
+
+void GapBuffer::move_down(size_t columns){
+	bool next_has_newline = move_right_line();
+
+	if(!next_has_newline){
+		return;
+	}
+
+	move_right_loop(columns);
+}

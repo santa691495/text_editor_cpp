@@ -30,6 +30,10 @@ class GapBuffer {
 		void insert(char data);
 		void move_left();
 		void move_right();
+
+		void move_up(size_t columns);
+		void move_down(size_t columns);
+
 		void grow();	
 		bool is_growable();
 
@@ -37,6 +41,11 @@ class GapBuffer {
 		size_t get_current_size(); //todo
 		void backspace();
 		void clear();	
+
+	private:
+		bool move_right_line();
+		bool move_left_line();
+		void move_right_loop(size_t steps);
 };
 
-#endif //GAP_BUFFER
+#endif //GAP_BUFFER 
