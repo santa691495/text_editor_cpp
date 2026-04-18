@@ -10,7 +10,6 @@
 #include "editorstate.h"
 #include <string>
 #include <filesystem>
-#include <fstream>
 
 //TODO: this test should just go to command mode already
 // buffer should delete itself once q is entered 
