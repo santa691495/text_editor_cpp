@@ -59,7 +59,6 @@ TEST(FileManagerNoConstructor, WriteFile){
 	ASSERT_EQ(file_text, expected_text);
 }   
 
-//BUG : read file not reading the text
 TEST(FileManagerNoConstructor, ReadFile){
 	std::filesystem::path target_path = "../filemanager/dummy.txt";
 	std::filesystem::path current_file = "";
