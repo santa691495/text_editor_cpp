@@ -1,4 +1,4 @@
-add_executable(filemanager_tests unittest.cpp)
+add_executable(filemanager_tests unittest.cpp unittest_no_constructor.cpp)
 
 target_link_libraries( filemanager_tests
 	GTest::gtest_main
