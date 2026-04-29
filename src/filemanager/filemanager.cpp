@@ -90,7 +90,9 @@ bool FileManager::read_file(std::filesystem::path filepath, GapBuffer& gapbuffer
 	for(auto& ch : input_line){
 		gapbuffer.insert(ch);
 	}
-	
+
+	set_current_file(filepath);
+
 	infile.close();
 	return true;
 }
