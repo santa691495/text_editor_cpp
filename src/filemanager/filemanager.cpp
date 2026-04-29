@@ -5,12 +5,22 @@
 #include "gapbuffer.h"
 #include "filemanager.h"
 
+//FIXME : Bug when setting file after passing nothing to constructor
 FileManager::FileManager(std::filesystem::path filepath){
  	auto target_file = resolve_target_path(filepath);
-	this->current_file = target_file;
+	
+	if(!std::filesystem::exists(target_file)){
+		return;
+	}	
 
+	if(!std::filesystem::is_regular_file(target_file)){
+		return;
+	}
+
+	this->current_file = target_file;
 }
 
+//FIXME : Bug when setting file after passing nothing to constructor
 void FileManager::set_current_file(std::filesystem::path filepath){
  	auto target_file = resolve_target_path(filepath);
 	
@@ -29,6 +39,7 @@ std::filesystem::path FileManager::get_current_file(){
 	return current_file;
 }
 
+//FIXME : Bug when setting file after passing nothing to constructor
 std::filesystem::path FileManager::resolve_target_path(std::filesystem::path filepath){
 	
 	std::filesystem::path base = 
@@ -48,7 +59,6 @@ std::filesystem::path FileManager::resolve_target_path(std::filesystem::path fil
 
 bool FileManager::file_exists(std::filesystem::path filepath){
 	auto resolved_path = resolve_target_path(filepath);
-
 	return std::filesystem::exists(resolved_path) && std::filesystem::is_regular_file(resolved_path);
 }
 
