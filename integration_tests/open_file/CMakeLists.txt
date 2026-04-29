@@ -15,3 +15,4 @@ target_link_libraries(open_file_test
 include(GoogleTest)
 gtest_discover_tests(open_file_test)
 
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/test_folder/test_file.txt" "File Open Success!")

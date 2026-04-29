@@ -12,8 +12,17 @@
 #include <filesystem>
 #include <fstream>
 
-//TODO: Test with Display::save_cursor_pos() and Display::fix_cursor_pos()
 TEST(OpenFile, OpenFile){
+
+    std::filesystem::path target_rel_path = "test_folder/test_file.txt";
+    std::filesystem::path target_abs_path = std::filesystem::current_path() / target_rel_path;
+
+    std::ofstream out_test_file(target_rel_path);
+    std::string file_text = "This Is The Correct Text!";
+
+    out_test_file << file_text; 
+    out_test_file.close();
+
     initscr();
     raw();
     keypad(stdscr, TRUE);
@@ -23,23 +32,49 @@ TEST(OpenFile, OpenFile){
     Display display_handler;
     IOHandler io_handler;
     GapBuffer gbuffer;
-    FileManager filemanager("./test_file.txt");
+    FileManager filemanager("");
     
     CommandRunner cmd_runner(filemanager, gbuffer,editor_state.running);
     CommandParser cmd_parser;
 
+    //simulation input 
+    std::vector<InputEvent>  test_inputs;
+
+    test_inputs.push_back({InputType::ctrl, 'c'});
+    test_inputs.push_back({InputType::character, 'o'});
+    test_inputs.push_back({InputType::character, ' '});
+
+    std::string target_rel_path_str = target_rel_path;
+    for(char ch : target_rel_path_str){
+        test_inputs.push_back({InputType::character, ch});
+    }
+
+    test_inputs.push_back({InputType::enter, '\n'});
+    test_inputs.push_back({InputType::ctrl, 'c'});
+    test_inputs.push_back({InputType::character, 'q'});
+    test_inputs.push_back({InputType::enter, '\n'});
+
+    size_t input_counter = 0;
+
+    //for thy assertion later !!!
+    std::string buffer_text_during_test;
+    std::filesystem::path current_filepath_during_test = "";
+    //=======
+
     while(editor_state.running){
 
-        std::string cmd_input_str;
-        //this while loop should be its own class 
 
         if(editor_state.cmd_mode){
             display_handler.render_cmd_mode();
         }
-
+        
+        std::string cmd_input_str;
         while(editor_state.cmd_mode){
-            //this should be its own function ===
-            InputEvent input = io_handler.get_input();
+            
+            InputEvent input = test_inputs[input_counter];
+            if(input_counter < test_inputs.size()){
+                ++input_counter;
+            }
             
             if(input.input_ch != '\n'){
                 cmd_input_str += input.input_ch;
@@ -50,17 +85,32 @@ TEST(OpenFile, OpenFile){
             CmdStatusObject cmd_status = cmd_runner.run(cmd);
 
             editor_state.cmd_mode = false;
-            // ===============================
         }
-        //this while loop should be its own class as well
+
+        if(!editor_state.running){
+            break;  
+        }
+        
         while(!editor_state.cmd_mode){
             std::string buffer_text = gbuffer.get_text();   
             display_handler.render_buffer(buffer_text);
             display_handler.fix_cursor_pos();
 
-            InputEvent input = io_handler.get_input();
+            //simulated input here 
+            InputEvent input = test_inputs[input_counter];
+            if(input_counter < test_inputs.size()){
+                ++input_counter;
+            }
+
+            //for thy assertions later !!!
+            if(gbuffer.get_text() != ""){
+                buffer_text_during_test = gbuffer.get_text();
+                current_filepath_during_test = filemanager.get_current_file();
+            }
+
             //This should be its own function ===
             switch (input.type) {
+
             case InputType::arrow_left:
                 display_handler.move_cursor_left();
                 display_handler.save_cursor_pos();
@@ -90,21 +140,20 @@ TEST(OpenFile, OpenFile){
                 break;
 
             case InputType::enter:
-
+                
                 break;
 
             case InputType::unknown:
 
                 break;
             }
-            //============================
+            
         }
-
     }
     
-    clear();
-    refresh();
     endwin();
 
-    ASSERT_TRUE(true);
+    //check gapbuffer if correct
+    ASSERT_EQ(buffer_text_during_test, file_text);
+    ASSERT_EQ(current_filepath_during_test, target_abs_path);
 }

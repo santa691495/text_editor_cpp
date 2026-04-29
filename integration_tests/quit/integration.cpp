@@ -11,8 +11,6 @@
 #include <string>
 #include <filesystem>
 
-//TODO: this test should just go to command mode already
-// buffer should delete itself once q is entered 
 TEST(QuitEditor, QuitEditor){
     //SETUP -----------------------
     initscr();
@@ -24,25 +22,36 @@ TEST(QuitEditor, QuitEditor){
     Display display_handler;
     IOHandler io_handler;
     GapBuffer gbuffer;
-    FileManager filemanager("./test_file.txt");
+    FileManager filemanager("");
     
     CommandRunner cmd_runner(filemanager, gbuffer,editor_state.running);
     CommandParser cmd_parser;
 
+    //simulation input
+    std::vector<InputEvent>  test_inputs;
+
+    test_inputs.push_back({InputType::ctrl, 'c'});
+    test_inputs.push_back({InputType::character, 'q'});
+    test_inputs.push_back({InputType::enter, '\n'});
+
+
+    size_t input_counter = 0;
     //PROCESS ----------------------
 
      while(editor_state.running){
 
         std::string cmd_input_str;
-        //this while loop should be its own class 
 
         if(editor_state.cmd_mode){
             display_handler.render_cmd_mode();
         }
 
         while(editor_state.cmd_mode){
-            //this should be its own function ===
-            InputEvent input = io_handler.get_input();
+            
+            InputEvent input = test_inputs[input_counter];
+            if(input_counter < test_inputs.size()){
+                ++input_counter;
+            }
             
             if(input.input_ch != '\n'){
                 cmd_input_str += input.input_ch;
@@ -53,41 +62,69 @@ TEST(QuitEditor, QuitEditor){
             CmdStatusObject cmd_status = cmd_runner.run(cmd);
 
             editor_state.cmd_mode = false;
-            // ===============================
         }
 
         if(!editor_state.running){
             break;  
         }
-        //this while loop should be its own class as well
+        
         while(!editor_state.cmd_mode){
             std::string buffer_text = gbuffer.get_text();   
             display_handler.render_buffer(buffer_text);
             display_handler.fix_cursor_pos();
 
-            InputEvent input = io_handler.get_input();
+            //simulated input here 
+            InputEvent input = test_inputs[input_counter];
+            if(input_counter < test_inputs.size()){
+                ++input_counter;
+            }
             //This should be its own function ===
             switch (input.type) {
 
+            case InputType::arrow_left:
+                display_handler.move_cursor_left();
+                display_handler.save_cursor_pos();
+                editor_state.cursor_left_next_refresh = true;
+                gbuffer.move_left();
+                break;
+
+            case InputType::arrow_right:
+                display_handler.move_cursor_right();
+                display_handler.save_cursor_pos();
+                editor_state.cursor_right_next_refresh = true;
+                gbuffer.move_right();
+                break;
+
+            case InputType::character:
+                gbuffer.insert(input.input_ch);
+                display_handler.save_cursor_pos();
+                break;
+
+            case InputType::backspace:
+                gbuffer.backspace();
+                display_handler.save_cursor_pos();
+                break;
+
             case InputType::ctrl:
                 editor_state.cmd_mode = true;
+                break;
+
+            case InputType::enter:
+                
                 break;
 
             case InputType::unknown:
 
                 break;
             }
-            //============================
+            
         }
-
     }
-
-
 
     // TEARDOWN --------------------
     clear();
     refresh();
     endwin();
 
-    ASSERT_TRUE(true);
+    ASSERT_FALSE(editor_state.running);
 }

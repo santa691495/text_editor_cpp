@@ -14,11 +14,10 @@
 #include <fstream>
 #include <sstream>
 
-//NOTE: test file is created through the CMakeLists.txt of the current binary dir
 TEST(WriteFile, WriteFile){
     std::string expected_file_text = "This is What The Buffer Should Have!";
 
-    std::filesystem::path test_file_path = "test_folder/test_file.txt";
+    std::filesystem::path test_file_path = "./test_folder/test_file.txt";
     std::ofstream truncate_test_file(test_file_path);
     truncate_test_file.close();
 
@@ -140,9 +139,8 @@ TEST(WriteFile, WriteFile){
 
     endwin();
 
-    //verify
     std::ifstream read_test_file(test_file_path);
-    ASSERT_TRUE(read_test_file.is_open());
+    EXPECT_TRUE(read_test_file.is_open());
 
     std::stringstream sstream_text;
     sstream_text << read_test_file.rdbuf();
