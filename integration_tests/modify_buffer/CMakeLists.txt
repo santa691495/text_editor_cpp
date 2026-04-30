@@ -10,3 +10,5 @@ target_link_libraries(modify_buffer_test
 
 include(GoogleTest)
 gtest_discover_tests(modify_buffer_test)
+
+add_test(NAME modify_buffer_test COMMAND modify_buffer_test)
