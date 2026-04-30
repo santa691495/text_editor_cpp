@@ -1,25 +1,23 @@
 #include <ncurses.h>
 #include "gtest/gtest.h"
+#include "inputtype.h"
 #include "iohandler.h"
+
+//FIXME : automate all unit tests 
 
 TEST(IoHandler, GetInputChar){
     IOHandler io_handler;
-    
+
     initscr();
     raw();
     keypad(stdscr, TRUE);
 
-    printw("%s", "Press 'a' ");
-    refresh();
+    InputEvent test_input = io_handler.get_input('a');
 
-    auto input_event = io_handler.get_input();
-
-    clear();
-    refresh();
     endwin();
 
-    ASSERT_EQ(input_event.input_ch, 'a');
-    ASSERT_EQ(input_event.type, InputType::character);
+    ASSERT_EQ(test_input.type, InputType::character);
+    ASSERT_EQ(test_input.input_ch, 'a');
 }
 
 TEST(IoHandler, GetInputCtrl){
@@ -29,18 +27,14 @@ TEST(IoHandler, GetInputCtrl){
     raw();
     keypad(stdscr, TRUE);
 
-    printw("%s", "Press 'ctrl+c' ");
-    refresh();
 
-    auto input_event = io_handler.get_input();
-    clear();
-    refresh();
+    InputEvent test_input = io_handler.get_input(CTRL('c'));
 
     endwin();
     
+    ASSERT_EQ(test_input.type, InputType::ctrl);
+    ASSERT_EQ(test_input.input_ch, 'c');
 
-    ASSERT_EQ(input_event.input_ch, CTRL('c'));
-    ASSERT_EQ(input_event.type, InputType::ctrl);
 }
 
 TEST(IoHandler, GetInputArrow){
@@ -53,14 +47,12 @@ TEST(IoHandler, GetInputArrow){
     printw("%s", "Press 'arrow-up' ");
     refresh();
 
-    auto input_event = io_handler.get_input();
-    clear();
-    refresh();
+    InputEvent test_input = io_handler.get_input(KEY_UP);
 
     endwin();
-
-    ASSERT_EQ(input_event.input_ch, KEY_UP);
-    ASSERT_EQ(input_event.type, InputType::arrow_up);
+    
+    ASSERT_EQ(test_input.type, InputType::arrow_up);
+    ASSERT_EQ(test_input.input_ch, KEY_UP); 
 }
 
 TEST(IoHandler, GetInputEnter){
@@ -70,17 +62,12 @@ TEST(IoHandler, GetInputEnter){
     raw();
     keypad(stdscr, TRUE);
 
-    printw("%s", "Press 'enter' ");
-    refresh();
-
-    auto input_event = io_handler.get_input();
-    clear();
-    refresh();
+    InputEvent test_input = io_handler.get_input('\n');
 
     endwin();
 
-    ASSERT_EQ(input_event.input_ch, '\n');
-    ASSERT_EQ(input_event.type, InputType::enter);
+    ASSERT_EQ(test_input.type, InputType::enter);
+    ASSERT_EQ(test_input.input_ch, '\n');
 }
 
 TEST(IoHandler, GetInputBackspace){
@@ -90,16 +77,12 @@ TEST(IoHandler, GetInputBackspace){
     raw();
     keypad(stdscr, TRUE);
 
-    printw("%s", "Press 'backspace' ");
-    refresh();
+    InputEvent test_input = io_handler.get_input(KEY_BACKSPACE);
 
-    auto input_event = io_handler.get_input();
-    clear();
-    refresh();
     endwin();
 
-    ASSERT_EQ(input_event.input_ch, KEY_BACKSPACE);
-    ASSERT_EQ(input_event.type, InputType::backspace);
+    ASSERT_EQ(test_input.type, InputType::backspace);
+    ASSERT_EQ(test_input.input_ch, KEY_BACKSPACE);
 }
 
 
