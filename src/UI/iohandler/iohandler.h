@@ -20,7 +20,7 @@ class IOHandler {
 	public:	
 
 		InputEvent get_input();
-
+		InputEvent get_input(int func_input_ch);
 };
 
 #endif //IO_HANDLER
