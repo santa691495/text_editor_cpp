@@ -8,13 +8,13 @@
 #include <string>
 #include <filesystem>
 #include <fstream>
-//TODO: Rewrite tests to adjust for new diagnostics implementation for command runners
-//must write to file
+
+//FIXME: make filepaths more modular
 TEST(CommandRunner, RegisterCmdWrite){
 	
 	//prep deps
 	std::filesystem::path current_file = "./dummy.txt";
-	std::filesystem::path target_file = "./test_path/target.txt";
+	std::filesystem::path target_file = "./test_folder/dummy_target.txt";
 
 	FileManager filemanager(current_file);
 
@@ -44,7 +44,7 @@ TEST(CommandRunner, RegisterCmdWrite){
 
 TEST(CommandRunner, RegisterCmdRead){
 	std::filesystem::path current_file = "./dummy.txt";
-	std::filesystem::path target_file = "./test_path/target.txt";
+	std::filesystem::path target_file = "./test_folder/dummy_target.txt";
 
 	FileManager filemanager(current_file);
 

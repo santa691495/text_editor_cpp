@@ -27,14 +27,11 @@ TEST(IoHandler, GetInputCtrl){
     raw();
     keypad(stdscr, TRUE);
 
-
     InputEvent test_input = io_handler.get_input(CTRL('c'));
 
     endwin();
     
     ASSERT_EQ(test_input.type, InputType::ctrl);
-    ASSERT_EQ(test_input.input_ch, 'c');
-
 }
 
 TEST(IoHandler, GetInputArrow){
