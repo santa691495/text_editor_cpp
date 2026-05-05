@@ -4,7 +4,7 @@
 
 //Manual testing for Display
 
-TEST(Display, ManualCommandMode){
+TEST(DisplayManual, ManualCommandMode){
     initscr();
 
     Display display_handler;
@@ -28,7 +28,7 @@ TEST(Display, ManualCommandMode){
     ASSERT_EQ(input, 'y');
 }
 
-TEST(Display, ManualCommandStatus){
+TEST(DisplayManual, ManualCommandStatus){
     initscr();
 
     Display display_handler;
@@ -49,7 +49,7 @@ TEST(Display, ManualCommandStatus){
     ASSERT_EQ(input, 'y');
 }
 
-TEST(Display, MoveCursor){
+TEST(DisplayManual, MoveCursor){
     initscr();
     cbreak();
     keypad(stdscr, TRUE);
