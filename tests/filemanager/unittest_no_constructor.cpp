@@ -7,8 +7,8 @@
 
 TEST(FileManagerNoConstructor, SetCurrentFile){
 	std::filesystem::path current_file = "";
-	std::filesystem::path expected_path = "/home/dingdong/softwareprojects/text_editor_practice/build/tests/filemanager/dummy.txt";	
-	std::filesystem::path target_path_relative = "dummy.txt";
+	std::filesystem::path expected_path = std::filesystem::current_path() / "dummy.txt";	
+	std::filesystem::path target_path_relative = "./dummy.txt";
 
 	EXPECT_TRUE(std::filesystem::exists(expected_path));
 
