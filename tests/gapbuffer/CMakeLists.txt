@@ -8,3 +8,7 @@ target_link_libraries(gapbuffer_tests
 include(GoogleTest)
 gtest_discover_tests(gapbuffer_tests)
 
+target_compile_options(gapbuffer_tests PRIVATE 
+	-g
+	-O0
+)

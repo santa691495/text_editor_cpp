@@ -103,8 +103,6 @@ TEST(GapBuffer,  IsGrowableAfterGrow){
 	}
 
 	test_buffer.grow();
-
-	size_t new_max_size = max_size * 2;
 	
 	for(size_t i = 0; i < max_size; ++i){
 		test_buffer.insert('a');
