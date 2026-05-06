@@ -31,8 +31,8 @@ class GapBuffer {
 		void move_left();
 		void move_right();
 
-		void move_up(size_t columns);
-		void move_down(size_t columns);
+		bool move_startln_up();
+		bool move_startln_down();
 
 		void grow();	
 		bool is_growable();

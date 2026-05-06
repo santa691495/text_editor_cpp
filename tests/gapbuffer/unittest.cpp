@@ -120,9 +120,9 @@ TEST(GapBuffer, IsGrowableNegative){
 	ASSERT_FALSE(test_buffer.is_growable());
 }	
 
-TEST(GapBuffer, MoveUp){
+TEST(GapBuffer, MoveStartlnUp){
 	GapBuffer test_buffer;	
-	size_t max_size =  test_buffer.get_current_size();
+	bool can_move_up;
 
 	std::string buffer_str = "aaaa\naaaaa";
 	std::string expected_str = "Baaaa\naaaaa";
@@ -132,53 +132,38 @@ TEST(GapBuffer, MoveUp){
 	}	
 
 	//taget location is at the start of the line, so dont move
-	test_buffer.move_up(0);
+	can_move_up = test_buffer.move_startln_up();
 	test_buffer.insert('B');
 
+	EXPECT_TRUE(can_move_up);
 	ASSERT_EQ(test_buffer.get_text(), expected_str);
 }
 
-TEST(GapBuffer, MoveDown){
+TEST(GapBuffer, MoveStartlnDown){
 	GapBuffer test_buffer;	
-	size_t max_size =  test_buffer.get_current_size();
+	bool can_move_down;
 
-	std::string buffer_str = "\na";
-	std::string expected_str = "\nBa";
+	std::string buffer_str = "a\na";
+	std::string expected_str = "a\nBa";
 
 	for(char& ch : buffer_str){
 		test_buffer.insert(ch);
 	}	
 
-	test_buffer.move_left();
-	test_buffer.move_left();
-	//taget location is at the start of the line, so dont move
-	test_buffer.move_down(0);
+	for(char ch : buffer_str){
+		test_buffer.move_left();
+	}
+
+	can_move_down = test_buffer.move_startln_down();
 	test_buffer.insert('B');
 
+	EXPECT_TRUE(can_move_down);
 	ASSERT_EQ(test_buffer.get_text(), expected_str);
-}
+}	
 
-TEST(GapBuffer, MoveUpWithSteps){
+TEST(GapBuffer, MoveStartlnDownAtBottom){
 	GapBuffer test_buffer;	
-	size_t max_size =  test_buffer.get_current_size();
-
-	std::string buffer_str = "aaaa\naaaaa";
-	std::string expected_str = "aaBaa\naaaaa";
-
-	for(char& ch : buffer_str){
-		test_buffer.insert(ch);
-	}	
-
-	//taget location is at the start of the line, so dont move
-	size_t steps = 2;
-	test_buffer.move_up(steps);
-	test_buffer.insert('B');
-
-	ASSERT_EQ(test_buffer.get_text(), expected_str);
-}
-
-TEST(GapBuffer, MoveDownWithSteps){
-	GapBuffer test_buffer;	
+	bool can_move_down;
 	size_t max_size =  test_buffer.get_current_size();
 
 	std::string buffer_str = "\na";
@@ -188,14 +173,37 @@ TEST(GapBuffer, MoveDownWithSteps){
 		test_buffer.insert(ch);
 	}	
 
-	test_buffer.move_left();
-	test_buffer.move_left();
-	test_buffer.move_left();
 	//taget location is at the start of the line, so dont move
-	test_buffer.move_down(1);
+	can_move_down = test_buffer.move_startln_down();
 	test_buffer.insert('B');
 
+	EXPECT_FALSE(can_move_down);
+	ASSERT_EQ(test_buffer.get_text(), expected_str);
+}	
+
+TEST(GapBuffer, MoveUpStartlnAtTop){
+	GapBuffer test_buffer;	
+	bool can_move_up;
+	size_t max_size =  test_buffer.get_current_size();
+
+	std::string buffer_str = "a\na";
+	std::string expected_str = "Ba\na";
+
+	for(char& ch : buffer_str){
+		test_buffer.insert(ch);
+	}	
+
+	for(char& ch : buffer_str){
+		test_buffer.move_left();
+	}
+
+	//taget location is at the start of the line, so dont move
+	can_move_up = test_buffer.move_startln_up();
+	test_buffer.insert('B');
+
+	EXPECT_FALSE(can_move_up);
 	ASSERT_EQ(test_buffer.get_text(), expected_str);
 }
+
 
 
