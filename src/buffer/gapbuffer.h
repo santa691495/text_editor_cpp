@@ -30,6 +30,9 @@ class GapBuffer {
 		void insert(char data);
 		void move_left();
 		void move_right();
+		bool is_at_line_edge();
+		bool is_at_line_start();
+		void move_to_start();
 
 		bool move_startln_up();
 		bool move_startln_down();

@@ -1,3 +1,4 @@
+#include <atomic>
 #include <vector>
 #include <string>
 #include "gapbuffer.h"
@@ -177,4 +178,30 @@ bool GapBuffer::move_startln_up(){
 
 bool GapBuffer::move_startln_down(){
 	return move_right_line();
+}
+
+bool GapBuffer::is_at_line_start() {
+	if(gap_start == buffer.data()){
+		return true;
+	} 
+	if(*(gap_start-1) == '\n'){
+		return true;
+	}	
+	return false;
+}	
+
+bool GapBuffer::is_at_line_edge() {
+	if(gap_end == buffer.data() + buffer.size()){
+		return true;
+	} 
+	if(*gap_end == '\n'){
+		return true;
+	}	
+	return false;
+}	
+
+void GapBuffer::move_to_start(){
+	while(gap_start != buffer.data()){
+		move_left();
+	}
 }
