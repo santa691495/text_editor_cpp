@@ -1,6 +1,6 @@
 add_library(cursorsyncer)
 
-target_sources( cursorsyncer 
+target_sources(cursorsyncer 
     PRIVATE 
         cursorsyncer.cpp
 
