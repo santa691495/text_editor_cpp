@@ -27,8 +27,12 @@ EditorCore::EditorCore(
 {}  
 
 void EditorCore::run(){
-    run_cmd_loop();
-    run_buffer_loop();   
+    while(state.running){
+        run_cmd_loop();
+        if(!state.running)
+            break;
+        run_buffer_loop();   
+    }
 }
 
 void EditorCore::run_cmd_loop(){
@@ -46,9 +50,12 @@ void EditorCore::run_cmd_loop(){
         CommandObject cmd = cmdparser.parse(cmd_input_str);
         CmdStatusObject cmd_status = cmdrunner.run(cmd);
 
+        if(cmd_status.success && cmd_status.cmd_type == CmdType::read){
+            cursorsync.calibrate_new_buffer();
+        }
+
         state.cmd_mode = false;
     }
-
 }
 
 void EditorCore::run_buffer_loop(){
@@ -69,13 +76,21 @@ void EditorCore::process_input_event(InputEvent& input){
         case InputType::arrow_left:
             cursorsync.move_left();
             dspl.save_cursor_pos();
-
             break;
 
         case InputType::arrow_right:
             cursorsync.move_right();
             dspl.save_cursor_pos();
+            break;  
 
+        case InputType::arrow_down:
+            cursorsync.move_startln_down();
+            dspl.save_cursor_pos();
+            break;
+
+        case InputType::arrow_up:
+            cursorsync.move_startln_up();
+            dspl.save_cursor_pos();
             break;
 
         case InputType::character:
@@ -94,6 +109,7 @@ void EditorCore::process_input_event(InputEvent& input){
 
         case InputType::enter:
             gbuffer.insert('\n');
+            cursorsync.move_startln_down();
             break;
 
         case InputType::unknown:
