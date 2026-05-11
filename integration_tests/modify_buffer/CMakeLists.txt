@@ -5,6 +5,10 @@ target_link_libraries(modify_buffer_test
 	display
 	iohandler
 	gapbuffer
+	cursorsyncer
+	editorstate
+	cmdparser
+	cmdrunner
 	${CURSES_LIBRARIES} tinfo
 )
 

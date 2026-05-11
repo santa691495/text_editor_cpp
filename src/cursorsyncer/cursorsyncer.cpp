@@ -28,6 +28,13 @@ void CursorSyncer::move_right(){
     }
 }   
 
+void CursorSyncer::calibrate_startln_backspace(){
+    display.move_cursor_startln_up();
+    while(!gbuffer.is_at_line_start()){
+        gbuffer.move_left();
+    }
+}
+
 void CursorSyncer::calibrate_new_buffer(){
     move(0,0);
     gbuffer.move_to_start();   

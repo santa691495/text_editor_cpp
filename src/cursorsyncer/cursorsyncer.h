@@ -29,6 +29,7 @@ class CursorSyncer {
         void move_startln_up();
         void move_left();
         void move_right();
+        void calibrate_startln_backspace();
         void calibrate_new_buffer();
 };
 

@@ -99,7 +99,13 @@ void EditorCore::process_input_event(InputEvent& input){
             break;
 
         case InputType::backspace:
-            gbuffer.backspace();
+            if(gbuffer.is_at_line_start()){
+                gbuffer.backspace();
+                cursorsync.calibrate_startln_backspace();
+            } else {
+                gbuffer.backspace();
+            }
+
             dspl.save_cursor_pos();
             break;
 
@@ -109,7 +115,8 @@ void EditorCore::process_input_event(InputEvent& input){
 
         case InputType::enter:
             gbuffer.insert('\n');
-            cursorsync.move_startln_down();
+            dspl.move_cursor_startln_down();
+            dspl.save_cursor_pos();
             break;
 
         case InputType::unknown:
