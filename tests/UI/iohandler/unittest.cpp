@@ -3,7 +3,6 @@
 #include "inputtype.h"
 #include "iohandler.h"
 
-//FIXME : automate all unit tests 
 
 TEST(IoHandler, GetInputChar){
     IOHandler io_handler;

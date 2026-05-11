@@ -4,7 +4,6 @@
 #include "cmdparser.h"
 #include "cmd_obj.h"
 	
-//get the string, cut it up, store first as the type, others are args
 CommandObject CommandParser::parse(std::string command){
 	std::stringstream ss(command);
 

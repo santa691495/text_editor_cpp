@@ -12,7 +12,6 @@
 #include <filesystem>
 
 TEST(QuitEditor, QuitEditor){
-    //SETUP -----------------------
     initscr();
     raw();
     keypad(stdscr, TRUE);
@@ -27,7 +26,6 @@ TEST(QuitEditor, QuitEditor){
     CommandRunner cmd_runner(filemanager, gbuffer,editor_state.running);
     CommandParser cmd_parser;
 
-    //simulation input
     std::vector<InputEvent>  test_inputs;
 
     test_inputs.push_back({InputType::ctrl, 'c'});
@@ -36,7 +34,6 @@ TEST(QuitEditor, QuitEditor){
 
 
     size_t input_counter = 0;
-    //PROCESS ----------------------
 
      while(editor_state.running){
 
@@ -73,12 +70,10 @@ TEST(QuitEditor, QuitEditor){
             display_handler.render_buffer(buffer_text);
             display_handler.fix_cursor_pos();
 
-            //simulated input here 
             InputEvent input = test_inputs[input_counter];
             if(input_counter < test_inputs.size()){
                 ++input_counter;
             }
-            //This should be its own function ===
             switch (input.type) {
 
             case InputType::arrow_left:
@@ -121,7 +116,6 @@ TEST(QuitEditor, QuitEditor){
         }
     }
 
-    // TEARDOWN --------------------
     clear();
     refresh();
     endwin();

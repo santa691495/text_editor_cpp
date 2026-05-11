@@ -21,7 +21,6 @@ TEST(WriteFile, WriteFile){
     std::ofstream truncate_test_file(test_file_path);
     truncate_test_file.close();
 
- //SETUP -----------------------
     initscr();
     raw();
     keypad(stdscr, TRUE);
@@ -36,7 +35,6 @@ TEST(WriteFile, WriteFile){
     CommandRunner cmd_runner(filemanager, gbuffer,editor_state.running);
     CommandParser cmd_parser;
 
-    //simulation input
     std::vector<InputEvent>  test_inputs;
 
     std::string test_buffer_input = expected_file_text;
@@ -52,7 +50,6 @@ TEST(WriteFile, WriteFile){
     test_inputs.push_back({InputType::enter, '\n'});
 
     size_t input_counter = 0;
-    //PROCESS ----------------------
 
      while(editor_state.running){
 
@@ -89,12 +86,10 @@ TEST(WriteFile, WriteFile){
             display_handler.render_buffer(buffer_text);
             display_handler.fix_cursor_pos();
 
-            //simulated input here 
             InputEvent input = test_inputs[input_counter];
             if(input_counter < test_inputs.size()){
                 ++input_counter;
             }
-            //This should be its own function ===
             switch (input.type) {
 
             case InputType::arrow_left:

@@ -1,5 +1,4 @@
 #include <string>
-#include <vector>
 #include <functional>
 #include <unordered_map>
 #include "cmdstatus.h"
@@ -23,15 +22,12 @@ class CommandRunner {
 		GapBuffer& gapbuffer;
 		bool& running;
 
-		static const std::vector<std::string> cmd_list;
-
 		//to relate command type to lambda function wrapping the class method
 		std::unordered_map<std::string, std::function<CmdStatusObject(CommandObject& cmd)>> handlers;
 	
 	public:
 		FileManager get_fm();
 		GapBuffer get_gb();
-		std::vector<std::string> get_cmd_list();
 	
 		CommandRunner(FileManager& fm, GapBuffer& gb, bool& run);	
 		CmdStatusObject run(CommandObject& cmd);

@@ -9,7 +9,7 @@
 
 	Responsible for manipulating the state of the program's text buffer 
 	implementation using a gap buffer, the primary data structure used to 
-	store editable text. 
+	store text. 
 
 */
 class GapBuffer {
@@ -41,7 +41,7 @@ class GapBuffer {
 		bool is_growable();
 
 		std::string get_text();	
-		size_t get_current_size(); //todo
+		size_t get_current_size(); 
 		void backspace();
 		void clear();	
 

@@ -2,7 +2,11 @@
 #include <ncurses.h>
 #include "display.h"
 
-//Manual testing for Display
+/*
+    Manual testing for Display
+    go to build/tests/UI/display/manual and run
+    "./display_tests_manual"
+*/
 
 TEST(DisplayManual, ManualCommandMode){
     initscr();

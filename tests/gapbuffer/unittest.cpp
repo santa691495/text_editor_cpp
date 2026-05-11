@@ -1,5 +1,4 @@
 #include <string> 
-#include <vector>
 #include "gapbuffer.h"
 #include "gtest/gtest.h"
 
@@ -40,8 +39,7 @@ TEST(GapBuffer, MovementLeft){
 	expected_text += x;
 	expected_text += z;
 	expected_text += y;
-
-	ASSERT_EQ(test_buffer.get_text(), expected_text);
+ASSERT_EQ(test_buffer.get_text(), expected_text);
 }
 
 TEST(GapBuffer, MovementRight){
@@ -131,7 +129,6 @@ TEST(GapBuffer, MoveStartlnUp){
 		test_buffer.insert(ch);
 	}	
 
-	//taget location is at the start of the line, so dont move
 	can_move_up = test_buffer.move_startln_up();
 	test_buffer.insert('B');
 
@@ -173,7 +170,6 @@ TEST(GapBuffer, MoveStartlnDownAtBottom){
 		test_buffer.insert(ch);
 	}	
 
-	//taget location is at the start of the line, so dont move
 	can_move_down = test_buffer.move_startln_down();
 	test_buffer.insert('B');
 
@@ -197,7 +193,6 @@ TEST(GapBuffer, MoveUpStartlnAtTop){
 		test_buffer.move_left();
 	}
 
-	//taget location is at the start of the line, so dont move
 	can_move_up = test_buffer.move_startln_up();
 	test_buffer.insert('B');
 

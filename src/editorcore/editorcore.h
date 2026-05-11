@@ -7,10 +7,16 @@
 #include "cursorsyncer.h"
 #include "gapbuffer.h"
 #include <ncurses.h>    
-#include <string>
 
 #ifndef EDITOR_CORE
 #define EDITOR_CORE
+/*
+    EditorCore
+
+    Responsible for orchestrating/directing the main program flow
+
+*/
+
 
 class EditorCore {
 

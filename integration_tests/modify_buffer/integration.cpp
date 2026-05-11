@@ -7,17 +7,13 @@
 #include "cmdparser.h"
 #include "gapbuffer.h"
 #include "cursorsyncer.h"
-#include "editorstate.h"
 #include <string>
 #include <vector>
 
 TEST(ModifyBuffer, InsertOnly){
-	// === setup ======================
 	initscr();
 	keypad(stdscr, TRUE);
-	raw();	
-
-	IOHandler io_handler;
+	raw();	IOHandler io_handler;
 	GapBuffer gap_buffer;
 	Display display_handler;
 
@@ -46,7 +42,6 @@ TEST(ModifyBuffer, InsertOnly){
 		display_handler.render_buffer(buffer_str);
 	} 
 
-	// === get internal buffer output ====
 	move(0,0);
 
 	char buffer_internal[50];
@@ -54,14 +49,11 @@ TEST(ModifyBuffer, InsertOnly){
 
 	std::string buffer_internal_stdstr(buffer_internal);
 
-	// === teardown ======================
-
 	endwin();
 	ASSERT_EQ(buffer_internal_stdstr, expected_str);
 }
-//FIXME
+
 TEST(ModifyBuffer, MoveLeftAndInsert){
-	// === setup ======================
 	initscr();
 	keypad(stdscr, TRUE);
 	raw();	
@@ -96,7 +88,6 @@ TEST(ModifyBuffer, MoveLeftAndInsert){
 		display_handler.render_buffer(buffer_str);
 	}
 
-	// === get internal buffer output ====
 	move(0,0);
 
 	char buffer_internal[50];
@@ -104,15 +95,12 @@ TEST(ModifyBuffer, MoveLeftAndInsert){
 
 	std::string buffer_internal_stdstr(buffer_internal);
 
-	// === teardown ======================
-
 	endwin();
 
 	ASSERT_EQ(buffer_internal_stdstr, expected_str);
 }
 
 TEST(ModifyBuffer, MoveRightAndInsert){
-	// === setup ======================
 	initscr();
 	keypad(stdscr, TRUE);
 	raw();	
@@ -127,7 +115,6 @@ TEST(ModifyBuffer, MoveRightAndInsert){
 	for(char& ch : init_buffer_str){
 		gap_buffer.insert(ch);
 	}
-
 
 	std::vector<int> input_chars = {KEY_RIGHT, 'A'};
 
@@ -148,7 +135,6 @@ TEST(ModifyBuffer, MoveRightAndInsert){
 		display_handler.render_buffer(buffer_str);
 	}
 
-	// === get internal buffer output ====
 	move(0,0);
 
 	char buffer_internal[50];
@@ -156,14 +142,12 @@ TEST(ModifyBuffer, MoveRightAndInsert){
 
 	std::string buffer_internal_stdstr(buffer_internal);
 
-	// === teardown ======================
 	endwin();
 
 	ASSERT_EQ(buffer_internal_stdstr, expected_str);
 }
 
 TEST(ModifyBuffer, Backspace){
-	// === setup ======================
 	initscr();
 	keypad(stdscr, TRUE);
 	raw();	
@@ -193,7 +177,6 @@ TEST(ModifyBuffer, Backspace){
 		display_handler.render_buffer(buffer_str);
 	}
 
-	// === get internal buffer output ====
 	move(0,0);
 
 	char buffer_internal[50];
@@ -201,10 +184,7 @@ TEST(ModifyBuffer, Backspace){
 
 	std::string buffer_internal_stdstr(buffer_internal);
 
-	// === teardown ======================
 	endwin();
-
-	// ===================================
 
 	ASSERT_EQ(buffer_internal_stdstr, expected_str);
 }

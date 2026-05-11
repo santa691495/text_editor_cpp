@@ -37,7 +37,6 @@ TEST(OpenFile, OpenFile){
     CommandRunner cmd_runner(filemanager, gbuffer,editor_state.running);
     CommandParser cmd_parser;
 
-    //simulation input 
     std::vector<InputEvent>  test_inputs;
 
     test_inputs.push_back({InputType::ctrl, 'c'});
@@ -59,7 +58,6 @@ TEST(OpenFile, OpenFile){
     //for thy assertion later !!!
     std::string buffer_text_during_test;
     std::filesystem::path current_filepath_during_test = "";
-    //=======
 
     while(editor_state.running){
 
@@ -96,7 +94,6 @@ TEST(OpenFile, OpenFile){
             display_handler.render_buffer(buffer_text);
             display_handler.fix_cursor_pos();
 
-            //simulated input here 
             InputEvent input = test_inputs[input_counter];
             if(input_counter < test_inputs.size()){
                 ++input_counter;
@@ -108,7 +105,6 @@ TEST(OpenFile, OpenFile){
                 current_filepath_during_test = filemanager.get_current_file();
             }
 
-            //This should be its own function ===
             switch (input.type) {
 
             case InputType::arrow_left:
@@ -153,7 +149,6 @@ TEST(OpenFile, OpenFile){
     
     endwin();
 
-    //check gapbuffer if correct
     ASSERT_EQ(buffer_text_during_test, file_text);
     ASSERT_EQ(current_filepath_during_test, target_abs_path);
 }

@@ -1,4 +1,3 @@
-#include <string>
 #include <functional>
 #include <unordered_map>
 #include "cmd_obj.h"
@@ -8,8 +7,6 @@
 #include "cmdtype.h"
 #include "cmdstatus.h"
 
-const std::vector<std::string> CommandRunner::cmd_list = {"w", "o", "q"};
-
 FileManager CommandRunner::get_fm(){
 	FileManager fm = filemanager;
 	return fm;
@@ -18,10 +15,6 @@ FileManager CommandRunner::get_fm(){
 GapBuffer CommandRunner::get_gb(){
 	GapBuffer gb = gapbuffer;
 	return gb;
-}
-
-std::vector<std::string> CommandRunner::get_cmd_list(){
-	return cmd_list;
 }
 
 CommandRunner::CommandRunner(FileManager& fm, GapBuffer& gb, bool& run):

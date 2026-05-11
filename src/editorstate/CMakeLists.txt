@@ -1,17 +1,7 @@
-add_library(editorstate)
+add_library(editorstate INTERFACE)
+target_include_directories(editorstate INTERFACE ${CMAKE_CURRENT_SOURCE_DIR} )
+target_sources(editorstate INTERFACE editorstate.h)
 
-target_sources( editorstate
-    PRIVATE
-        editorstate.cpp
-
-    PUBLIC
-    FILE_SET HEADERS
-    BASE_DIRS
-        ${CMAKE_CURRENT_SOURCE_DIR}
-    FILES 
-        editorstate.h
-)
-
-target_link_libraries(editorstate 
+target_link_libraries(editorstate INTERFACE
     ${CURSES_LIBRARIES}
 )

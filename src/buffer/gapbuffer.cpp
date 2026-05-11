@@ -12,13 +12,11 @@ void GapBuffer::move_left(){
 		return;
 	}
 	
-	//check left side
 	char* target {gap_start-1};
 	
-	//move to rightmost side of the gap (right before gap end)
 	char* rightmost {gap_end-1};
 	*rightmost = *target;
-	//move gap start and gap_right to the left
+
 	gap_start -= 1;
 	gap_end -= 1;
 }
@@ -170,7 +168,7 @@ bool GapBuffer::move_left_line() {
 
     return true;
 }
-//FIXME : this wrapper is useless
+
 bool GapBuffer::move_startln_up(){
 	return move_left_line();
 }

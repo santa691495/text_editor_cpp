@@ -15,7 +15,6 @@ TEST(Display, RenderBuffer){
 	
 	move(0,0);
 
-	//inspect screen contents
 	char buffer_internal[50];
 	innstr(buffer_internal, expected_str.size());
 	std::string buffer_internal_stdstr(buffer_internal);
@@ -64,7 +63,6 @@ TEST(Display, MoveDownNotAtBottom){
 	initscr();
 	display_obj.move_cursor_startln_down();
 
-	//check cursor position
 	int current_x, current_y;
 	getyx(stdscr, current_y, current_x);
 
@@ -85,7 +83,6 @@ TEST(Display, MoveUpAtTop){
 
 	display_obj.move_cursor_startln_up();
 
-	//check cursor position
 	int current_x, current_y;
 	getyx(stdscr, current_y, current_x);
 
@@ -104,12 +101,10 @@ TEST(Display, MoveUpNotAtTop){
 	
 	initscr();	
 
-	//start before top of screen
 	move(1,0);
 
 	display_obj.move_cursor_startln_up();
 
-	//check cursor position
 	int current_x, current_y;
 	getyx(stdscr, current_y, current_x);
 
