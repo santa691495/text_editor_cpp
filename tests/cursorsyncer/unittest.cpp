@@ -307,10 +307,7 @@ TEST(CursorSync, MoveStartlnDownOnBottom){
 
     endwin();   
 
-
     ASSERT_EQ(test_gbuffer.get_text(), expected_buffer_str);
     ASSERT_EQ(new_posx, expected_new_posx);
     ASSERT_EQ(new_posy, expected_new_posy);
-
 }
-

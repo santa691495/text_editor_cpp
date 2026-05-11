@@ -1,4 +1,4 @@
-add_executable(cursorsyncer_tests unittest.cpp)
+add_executable(cursorsyncer_tests unittest.cpp newlines_stacked/unittest.cpp)
 
 target_link_libraries(cursorsyncer_tests 
     cursorsyncer

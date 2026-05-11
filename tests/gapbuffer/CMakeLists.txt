@@ -1,4 +1,4 @@
-add_executable(gapbuffer_tests unittest.cpp case_after_grow/unittest.cpp)
+add_executable(gapbuffer_tests unittest.cpp case_after_grow/unittest.cpp case_newlines_stacked/unittest.cpp)
 
 target_link_libraries(gapbuffer_tests
 	GTest::gtest_main

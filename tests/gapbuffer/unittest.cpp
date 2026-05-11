@@ -205,5 +205,3 @@ TEST(GapBuffer, MoveUpStartlnAtTop){
 	ASSERT_EQ(test_buffer.get_text(), expected_str);
 }
 
-
-

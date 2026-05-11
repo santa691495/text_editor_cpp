@@ -1,4 +1,3 @@
-#include <atomic>
 #include <vector>
 #include <string>
 #include "gapbuffer.h"
@@ -137,40 +136,40 @@ bool GapBuffer::move_right_line(){
 	return true;
 }
 
-bool GapBuffer::move_left_line(){
+bool GapBuffer::move_left_line() {
+    if (gap_start == buffer.data()) {
+        return false;
+    }
 
-	if(gap_start == buffer.data()){
-		return false;
-	}
+    char* finder = gap_start - 1;
+    while (finder >= buffer.data() && *finder != '\n') {
+        --finder;
+    }
 
-	char* finder = gap_start;
+    if (finder < buffer.data() || *finder != '\n') {
+        return false;
+    }
 
-	for(; *finder != '\n'; --finder){
-		if(finder == buffer.data()){
-			return false;
-		}
-	}	
+    char* line_end = finder; 
+    --finder;
 
-	--finder;
-	for(; *finder != '\n'; --finder){
-		if(finder == buffer.data()){
-			break;
-		}
-	}
+    while (finder >= buffer.data() && *finder != '\n') {
+        --finder;
+    }
 
-	if(finder == buffer.data()){
-		while(gap_start != buffer.data()){
-			move_left();
-		}
-	} else {
-		while(gap_start != finder+1){
-			move_left();
-		}
-	}
+    char* target;
+    if (finder < buffer.data() || *finder != '\n') {
+        target = buffer.data();
+    } else {
+        target = finder + 1;
+    }
 
-	return true;
+    while (gap_start != target) {
+        move_left();
+    }
+
+    return true;
 }
-
 //FIXME : this wrapper is useless
 bool GapBuffer::move_startln_up(){
 	return move_left_line();
