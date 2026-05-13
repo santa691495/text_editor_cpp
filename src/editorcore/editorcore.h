@@ -46,6 +46,7 @@ class EditorCore {
 
     private:
         void process_input_event(InputEvent& input);
+        void process_cmd_input_event(InputEvent& input, GapBuffer& cmd_mode_buffer);
 };
 
 #endif

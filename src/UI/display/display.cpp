@@ -18,15 +18,28 @@ Display::Display(){
 	cmd_status_win = newwin(win_height, win_width, start_y, start_x);
 }
 
-void Display::render_cmd_mode(){
-	
+void Display::render_cmd_mode(std::string& buffer_text){
 	clear();
 
-	//calculate bottom
 	int scr_height, scr_width;
-	getmaxyx(stdscr, scr_height, scr_width);
+	getmaxyx(stdscr, scr_height, scr_width);	
 
 	move(scr_height/2, scr_width/2);
+
+	const char* c_text = buffer_text.c_str();
+	printw("%s", c_text);
+
+	refresh();
+}
+
+void Display::render_cmd_mode(){
+	clear();
+
+	int scr_height, scr_width;
+	getmaxyx(stdscr, scr_height, scr_width);	
+
+	move(scr_height/2, scr_width/2);
+
 	refresh();
 }
 
