@@ -95,14 +95,12 @@ TEST(WriteFile, WriteFile){
             case InputType::arrow_left:
                 display_handler.move_cursor_left();
                 display_handler.save_cursor_pos();
-                editor_state.cursor_left_next_refresh = true;
                 gbuffer.move_left();
                 break;
 
             case InputType::arrow_right:
                 display_handler.move_cursor_right();
                 display_handler.save_cursor_pos();
-                editor_state.cursor_right_next_refresh = true;
                 gbuffer.move_right();
                 break;
 

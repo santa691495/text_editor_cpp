@@ -68,7 +68,7 @@ std::string Display::format_cmd_status(CmdStatusObject& cmd_status){
 		break;
 	
 	case CmdType::null:
-			cmd_str += "null ";
+			cmd_str += "unknown ";
 		break;
 	
 	}
@@ -95,8 +95,7 @@ void Display::render_buffer(std::string& buffer_text){
 	refresh();
 }
 
-void Display::render_cmd_status(CmdStatusObject& cmd_status){
-	
+void Display::render_cmd_status(CmdStatusObject cmd_status){
 	wclear(cmd_status_win);
 
 	std::string status_text = format_cmd_status(cmd_status);
@@ -108,7 +107,27 @@ void Display::render_cmd_status(CmdStatusObject& cmd_status){
 	wattroff(cmd_status_win, A_STANDOUT);
 
 	wrefresh(cmd_status_win);
+}
 
+void Display::render_cmd_status(){
+	std::string status_text = format_cmd_status(saved_cmd_status);
+	const char* c_text = status_text.c_str();	
+
+	int max_y;
+	max_y = getmaxy(stdscr);
+
+	move(max_y-1, 0);
+
+	clrtoeol();
+	attron(A_STANDOUT);
+	printw("%s", c_text);
+	attroff(A_STANDOUT);
+
+	refresh();
+}
+
+void Display::save_cmd_status(CmdStatusObject cmd_status){
+	saved_cmd_status = cmd_status;
 }
 
 Display::~Display(){

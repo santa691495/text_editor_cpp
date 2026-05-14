@@ -72,6 +72,8 @@ void EditorCore::process_cmd_input_event(InputEvent& input, GapBuffer& cmd_mode_
             CommandObject cmd = cmdparser.parse(cmd_string);
             CmdStatusObject cmd_status = cmdrunner.run(cmd);
 
+            dspl.save_cmd_status(cmd_status);
+
             cursorsync.calibrate_new_buffer();
             dspl.save_cursor_pos();
 
@@ -80,7 +82,6 @@ void EditorCore::process_cmd_input_event(InputEvent& input, GapBuffer& cmd_mode_
     }
 }
 
-//TODO: Make a temporary gap buffer in this loop to allow backspaces :)))
 void EditorCore::run_cmd_loop(){
     if(!state.cmd_mode){
         return;
@@ -99,12 +100,19 @@ void EditorCore::run_cmd_loop(){
         process_cmd_input_event(input, cmd_mode_buffer);
     }
 
+    state.cmd_was_executed = true;
 }
 
 void EditorCore::run_buffer_loop(){
     while(!state.cmd_mode){
         std::string buffer_text = gbuffer.get_text();   
         dspl.render_buffer(buffer_text);
+
+        if(state.cmd_was_executed){
+            dspl.render_cmd_status();
+            state.cmd_was_executed = false;
+        }
+
         dspl.fix_cursor_pos();
 
         InputEvent input = io.get_input();

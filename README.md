@@ -1,5 +1,5 @@
 ### Text Editor Project 
-  A basic TUI text editor written entirely in C++ 
+  A basic TUI text editor written entirely in C++ :))))
 ---
 ## What it can do
   - Open and write onto text files
@@ -12,4 +12,5 @@
 ## How to Build and Run
   # Dependencies 
 
-  
+## Known problems / limitations :(
+  - Can't maintain column position of cursor when moving up and down
