@@ -1,4 +1,4 @@
-### Text Editor Project 
+# Text Editor Project 
   A basic TUI text editor written entirely in C++ for linux :))))
 ---
 ## What it can do :) 
