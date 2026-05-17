@@ -9,6 +9,6 @@
 
 
 */
-enum class CmdType { write, read, quit, null };
+enum class CmdType { write_new, write_exists, read, quit, null };
 
 #endif 

@@ -6,6 +6,7 @@
 #include "cmdrunner.h"
 #include "cmdtype.h"
 #include "cmdstatus.h"
+#include "filestatus.h"
 
 FileManager CommandRunner::get_fm(){
 	FileManager fm = filemanager;
@@ -26,23 +27,32 @@ CommandRunner::CommandRunner(FileManager& fm, GapBuffer& gb, bool& run):
 		if(cmd.args.empty()){
 			cmd.args.push_back(filemanager.get_current_file().string());
 		}
-		bool is_written = filemanager.write_file(cmd.args[0], gapbuffer);
+		FileStatus file_status = filemanager.write_file(cmd.args[0], gapbuffer); 
 
-		CmdStatusObject write_status(CmdType::write, is_written);
-		return write_status;
+		if(file_status == FileStatus::EXISTS){
+			return CmdStatusObject(CmdType::write_exists, true);
+		} else if(file_status == FileStatus::FAIL){
+			return CmdStatusObject(CmdType::null, false);
+		} else {
+			return CmdStatusObject(CmdType::write_new, true);
+		} 
+
 	};
 
 	handlers["o"] = [this](CommandObject& cmd)-> CmdStatusObject {
 
-		bool is_read;
+		FileStatus file_status;
 		if(cmd.args.empty()){
-			is_read = filemanager.read_file(filemanager.get_current_file(), gapbuffer);
+			 file_status = filemanager.read_file(filemanager.get_current_file(), gapbuffer);
 		} else {
-			is_read = filemanager.read_file(cmd.args[0], gapbuffer);
+			file_status = filemanager.read_file(cmd.args[0], gapbuffer);
 		}
-		
-		CmdStatusObject read_status(CmdType::read, is_read);
-		return read_status;
+
+		if(file_status == FileStatus::EXISTS){
+			return CmdStatusObject(CmdType::read, true);
+		} else {
+			return CmdStatusObject(CmdType::read, false);
+		}
 	};		
 
 	handlers["q"] = [this](CommandObject& cmd) -> CmdStatusObject{

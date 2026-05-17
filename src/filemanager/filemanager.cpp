@@ -4,6 +4,7 @@
 #include <iostream>
 #include "gapbuffer.h"
 #include "filemanager.h"
+#include "filestatus.h"
 
 FileManager::FileManager(std::filesystem::path filepath){
  	auto target_file = resolve_target_path(filepath);
@@ -59,28 +60,38 @@ bool FileManager::file_exists(std::filesystem::path filepath){
 	return std::filesystem::exists(resolved_path) && std::filesystem::is_regular_file(resolved_path);
 }
 
-bool FileManager::write_file(std::filesystem::path filepath, GapBuffer& gapbuffer){
+FileStatus FileManager::write_file(std::filesystem::path filepath, GapBuffer& gapbuffer){
 	filepath = resolve_target_path(filepath);
+
+	bool is_new_file = !file_exists(filepath) ? true : false;
 	
 	std::ofstream outfile(filepath, std::ios::trunc);
 	
 	if(!outfile){
 		std::cerr << "Could not open file\n";
-		return false;
+		return FileStatus::FAIL;
 	}
 	std::string buffer_text = gapbuffer.get_text();
 	outfile << buffer_text;
-	return true;
+
+	if(is_new_file){
+		return FileStatus::NEW;
+	}
+	return FileStatus::EXISTS;
 }	
 
-bool FileManager::read_file(std::filesystem::path filepath, GapBuffer& gapbuffer){
+FileStatus FileManager::read_file(std::filesystem::path filepath, GapBuffer& gapbuffer){
 	filepath = resolve_target_path(filepath);
+	
+	if(!file_exists(filepath)){
+		return FileStatus::NOT_EXISTS;
+	}
 	
 	std::ifstream infile(filepath);
 	
 	if(!infile){
 		std::cerr << "Could not open file: " << filepath << "\n";
-		return false;
+		return FileStatus::FAIL;
 	}
 		
 	std::string input_line;
@@ -92,9 +103,9 @@ bool FileManager::read_file(std::filesystem::path filepath, GapBuffer& gapbuffer
 	}
 
 	set_current_file(filepath);
-
 	infile.close();
-	return true;
+
+	return FileStatus::EXISTS;
 }
 
 

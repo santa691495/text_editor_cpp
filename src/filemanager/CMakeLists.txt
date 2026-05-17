@@ -15,3 +15,7 @@ target_sources(filemanager
 target_link_libraries( filemanager
 	gapbuffer
 )
+
+add_library(filestatus INTERFACE)
+target_include_directories(filestatus INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+target_sources(filestatus INTERFACE filestatus.h)

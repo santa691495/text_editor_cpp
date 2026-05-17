@@ -55,8 +55,12 @@ std::string Display::format_cmd_status(CmdStatusObject& cmd_status){
 
 	switch (cmd_status.cmd_type)
 	{
-	case CmdType::write:
+	case CmdType::write_exists:
 			cmd_str += "write ";
+		break;
+
+	case CmdType::write_new:
+			cmd_str += "write [new] ";
 		break;
 
 	case CmdType::read:
@@ -70,7 +74,6 @@ std::string Display::format_cmd_status(CmdStatusObject& cmd_status){
 	case CmdType::null:
 			cmd_str += "unknown ";
 		break;
-	
 	}
 
 	return cmd_str;

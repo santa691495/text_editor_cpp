@@ -9,7 +9,6 @@
 #include <filesystem>
 #include <fstream>
 
-//FIXME: make filepaths more modular
 TEST(CommandRunner, RegisterCmdWrite){
 	
 	//prep deps
@@ -39,7 +38,7 @@ TEST(CommandRunner, RegisterCmdWrite){
 	
 	ASSERT_EQ(gapbuffer.get_text(), expected_text);
 	EXPECT_TRUE(cmd_status.success);
-	EXPECT_EQ(cmd_status.cmd_type, CmdType::write);
+	EXPECT_EQ(cmd_status.cmd_type, CmdType::write_exists);
 }
 
 TEST(CommandRunner, RegisterCmdRead){

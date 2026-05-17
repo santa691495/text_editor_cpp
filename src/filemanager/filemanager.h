@@ -1,5 +1,6 @@
 #include <filesystem>
 #include "gapbuffer.h"
+#include "filestatus.h"
 
 #ifndef FILE_MANAGER
 #define FILE_MANAGER
@@ -25,8 +26,8 @@ class FileManager {
 
 		std::filesystem::path resolve_target_path(std::filesystem::path filepath); 
 		bool file_exists(std::filesystem::path filepath);
-		bool write_file(std::filesystem::path filepath, GapBuffer& gapbuffer);
-		bool read_file(std::filesystem::path filepath, GapBuffer& gapbuffer);
+		FileStatus write_file(std::filesystem::path filepath, GapBuffer& gapbuffer);
+		FileStatus read_file(std::filesystem::path filepath, GapBuffer& gapbuffer);
 };
 
 #endif //FILE_MANAGER
