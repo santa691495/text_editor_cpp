@@ -99,6 +99,9 @@ FileStatus FileManager::read_file(std::filesystem::path filepath, GapBuffer& gap
 
 	gapbuffer.clear();
 	for(auto& ch : input_line){
+		if(gapbuffer.is_growable()){
+			gapbuffer.grow();
+		}
 		gapbuffer.insert(ch);
 	}
 
