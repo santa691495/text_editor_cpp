@@ -14,7 +14,8 @@
   - Can't maintain column position of cursor when moving up and down
   - No line numbers
   - No scrolling (Amount of text on screen depends on the size of the your terminal window)
-  - prints out 'ctrl + [character]' and 'alt + [character]' 
+  - prints out 'ctrl + [character]' and 'alt + [character]'
+  - Screen flickers when moving the cursor quickly 
 
 ## How to Build and Run 
   ### Install Dependencies  
